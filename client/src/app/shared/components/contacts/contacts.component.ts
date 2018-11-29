@@ -22,8 +22,6 @@ export class ContactsComponent implements OnInit {
   constructor(private fotoPerfilDataService: FotoPerfilService) { }
 
   ngOnInit() {
-    //const logedResult = JSON.parse(localStorage.getItem('logedResult')) as LoginResult;
-    // no inicia 
     const logedResult = JSON.parse(localStorage.getItem('logedResult')) as LoginResult;
     this.personaLogeada = logedResult.persona;
     this.userName = this.personaLogeada.nombre1 + ' ' + this.personaLogeada.nombre2 + ' ' + this.personaLogeada.apellido1 + ' ' + this.personaLogeada.apellido2;
