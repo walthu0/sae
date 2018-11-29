@@ -1,7 +1,8 @@
-import { LoginResult } from 'app/entidades/especifico/Login-Result';
 import { Persona } from './../../../entidades/CRUD/Persona';
 import { FotoPerfilService } from 'app/CRUD/fotoperfil/fotoperfil.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { LoginResult } from 'app/entidades/especifico/Login-Result';
+
 
 @Component({
   selector: 'app-contacts',
@@ -18,11 +19,11 @@ export class ContactsComponent implements OnInit {
     fotoType: string;
     fotoFile: string;
 
-
-    aparecer: boolean = true;
   constructor(private fotoPerfilDataService: FotoPerfilService) { }
 
   ngOnInit() {
+    //const logedResult = JSON.parse(localStorage.getItem('logedResult')) as LoginResult;
+    // no inicia 
     const logedResult = JSON.parse(localStorage.getItem('logedResult')) as LoginResult;
     this.personaLogeada = logedResult.persona;
     this.userName = this.personaLogeada.nombre1 + ' ' + this.personaLogeada.nombre2 + ' ' + this.personaLogeada.apellido1 + ' ' + this.personaLogeada.apellido2;
@@ -35,6 +36,11 @@ export class ContactsComponent implements OnInit {
     } else {
         this.showMenu = element;
     }
+  }
+
+  refreshContactVisibleState() {
+    const estado = JSON.parse(localStorage.getItem('contactSpaceVisibleState')) as Boolean;
+    return estado;
   }
 
   getFotoPerfil() {
@@ -53,12 +59,6 @@ export class ContactsComponent implements OnInit {
 
         });
   }
-  botonAparecer(){
-if(this.aparecer == true){
-    this.aparecer = false;
-}else{
-    this.aparecer = true;
-}
-  }
+
 
 }
