@@ -1,0 +1,90 @@
+
+  <button  type="button" class="menuIcono" (click)="botonAparecer()" ><i  class="fa fa-align-justify  "></i></button>
+  
+
+   
+<nav *ngIf="aparecer == true" class="chatspace" [ngClass]="{sidebarPushRight: isActive}">
+    <ul class="list-group">
+        <!--a routerLink="/yavirac" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <img src="{{srcFoto}}" class="rounded-circle" width="40px">
+            {{userName}}
+        </a-->
+        <div class="nested-menu">
+            <a class="list-group-item" (click)="addExpandClass('grupo1')">
+                <span><i class="fa fa-plus"></i>&nbsp; Comunidad Yavirac</span>
+            </a>
+            <li class="nested" [class.expand]="showMenu === 'grupo1'">
+                <ul class="submenu">
+                    <li>
+                        <a [routerLink]="['/asistencia-registro']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            Todos
+                        </a>
+                    </li>
+                    <li>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Buscar...">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-info col-12">
+                                    <i class="fa fa-search"></i>frsdf
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="col-12 text-center" style="border-bottom-style: solid; border-width: 2px; border-color: white; color:white;">
+                            <strong>Encontrados:</strong>
+                        </div>
+                        <a [routerLink]="['/asistencia-justificacion']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            <img src="{{srcFoto}}" class="rounded-circle" width="30px">&nbsp; Luis Salazar
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <a class="list-group-item" (click)="addExpandClass('grupo2')">
+                <span><i class="fa fa-plus"></i>&nbsp; Desarrollo de Software</span>
+            </a>
+            <li class="nested" [class.expand]="showMenu === 'grupo2'">
+                <ul class="submenu">
+                    <li>
+                        <a [routerLink]="['/asistencia-registro']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            Primer Nivel
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/asistencia-justificacion']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            Todos
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/asistencia-justificacion']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            Matemáticas
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/asistencia-justificacion']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            Programación II
+                        </a>
+                    </li>
+                    <li>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Buscar...">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-info col-12">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="col-12 text-center" style="border-bottom-style: solid; border-width: 2px; border-color: white; color:white;">
+                            <strong>Encontrados:</strong>
+                        </div>
+                        <a [routerLink]="['/asistencia-justificacion']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            <img src="{{srcFoto}}" class="rounded-circle" width="30px">&nbsp; Luis Salazar
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </div>
+    </ul>
+</nav>
