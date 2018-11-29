@@ -23,7 +23,10 @@ export class HeaderComponent implements OnInit {
     pushRightClass: string = 'push-right';
     username: string;
 
+    contactSpaceVisible: boolean;
+
     constructor(private translate: TranslateService, public router: Router, private fotoPerfilDataService: FotoPerfilService) {
+        this.contactSpaceVisible = true;
         this.router.events.subscribe((val) => {
             if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
                 this.toggleSidebar();
@@ -36,6 +39,15 @@ export class HeaderComponent implements OnInit {
         this.personaLogeada = logedResult.persona;
         this.username = this.personaLogeada.nombre1 + ' ' + this.personaLogeada.nombre2 + ' ' + this.personaLogeada.apellido1 + ' ' + this.personaLogeada.apellido2;
         this.getFotoPerfil();
+    }
+
+    refreshContactVisibleState() {
+        if (this.contactSpaceVisible) {
+            this.contactSpaceVisible = false;
+        } else {
+            this.contactSpaceVisible = true;
+        }
+        localStorage.setItem('contactSpaceVisibleState', JSON.stringify(this.contactSpaceVisible));
     }
 
     getFotoPerfil() {
