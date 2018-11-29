@@ -1,8 +1,8 @@
 
-  
-  
 
-   
+
+
+
 <nav *ngIf="refreshContactVisibleState()" class="chatspace" [ngClass]="{sidebarPushRight: isActive}">
     <ul class="list-group">
         <div class="nested-menu">
@@ -18,10 +18,10 @@
                     </li>
                     <li>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Buscar...">
+                            <input type="text" class="form-control" placeholder="Buscar..." [(ngModel)]="filtroComunidad">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-info col-12">
-                                    <i class="fa fa-search"></i>frsdf
+                                <button type="button" class="btn btn-info col-12" (click)="searchPersonas()">
+                                    <i class="fa fa-search"></i>
                                 </button>
                             </div>
                         </div>
@@ -30,8 +30,8 @@
                         <div class="col-12 text-center" style="border-bottom-style: solid; border-width: 2px; border-color: white; color:white;">
                             <strong>Encontrados:</strong>
                         </div>
-                        <a [routerLink]="['/asistencia-justificacion']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                            <img src="{{srcFoto}}" class="rounded-circle" width="30px">&nbsp; Luis Salazar
+                        <a *ngFor="let persona of personasFiltroComunidad" class="list-group-item">
+                            {{persona.nombre1}} {{persona.nombre2}} {{persona.apellido1}} {{persona.apellido2}}
                         </a>
                     </li>
                 </ul>

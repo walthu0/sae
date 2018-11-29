@@ -103,4 +103,13 @@ class Controlador_persona extends Controlador_Base
         $respuesta = $this->conexion->ejecutarConsulta($sql, $parametros);
         return $respuesta;
     }
+
+
+    function leer_filtrado_nombre_completo($args)
+    {
+        $filtro = $args["filtro"];
+        $sql = "SELECT DISTINCT Persona.id, Persona.nombre1, Persona.nombre2, Persona.apellido1, Persona.apellido2, CONCAT(Persona.nombre1, ' ', Persona.nombre2, ' ', Persona.apellido1, ' ', Persona.apellido2) as NombreCompleto, CONCAT(Persona.nombre1, ' ', Persona.apellido1) as NombrePrincipal FROM Persona WHERE CONCAT(Persona.nombre1, ' ', Persona.nombre2, ' ', Persona.apellido1, ' ', Persona.apellido2) LIKE '%$filtro%' OR CONCAT(Persona.nombre1, ' ', Persona.apellido1) LIKE '%$filtro%' ORDER BY NombreCompleto ASC;";
+        $respuesta = $this->conexion->ejecutarConsulta($sql, $parametros);
+        return $respuesta;
+    }
 }

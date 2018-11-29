@@ -31,6 +31,10 @@ export class PersonaService {
         return this.http.get(this.urlBase + '/leer_filtrado' + '?columna=' + columna + '&tipo_filtro=' + tipoFiltro + '&filtro=' + filtro).toPromise().then(response => response.json() as Persona[]).catch(this.handleError);
     }
 
+    getFiltradoNombreCompleto(filtro: string): Promise<Persona[]> {
+        return this.http.get(this.urlBase + '/leer_filtrado_nombre_completo' + '?filtro=' + filtro).toPromise().then(response => response.json() as Persona[]).catch(this.handleError);
+    }
+
     getNumeroPaginas(tamanoPagina: number): Promise<any> {
         return this.http.get(this.urlBase + '/numero_paginas' + '?registros_por_pagina=' + tamanoPagina).toPromise().then(response => response.json()).catch(this.handleError);
     }
