@@ -2,6 +2,10 @@ import { Persona } from 'app/entidades/CRUD/Persona';
 import { LoginResult } from './../../../entidades/especifico/Login-Result';
 import { Component, OnInit } from '@angular/core';
 import {FotoPerfilService} from 'app/CRUD/fotoperfil/fotoperfil.service';
+// firebase
+import { AngularFireDatabase } from 'angularfire2/database';
+import * as firebase from 'firebase';
+import { ChatMensaje } from '../.././../entidades/especifico/Chat-Mensajes';
 
 @Component({
   selector: 'app-chatspace',
@@ -20,7 +24,9 @@ export class ChatspaceComponent implements OnInit {
   fotoType: string;
   fotoFile: string;
 
-  constructor(private fotoPerfilDataService: FotoPerfilService) { }
+  
+
+  constructor(private fotoPerfilDataService: FotoPerfilService, public angularFireDatabase: AngularFireDatabase) { }
 
   ngOnInit() {
     const logedResult = JSON.parse(localStorage.getItem('logedResult')) as LoginResult;

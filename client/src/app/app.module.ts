@@ -17,6 +17,11 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { ToastOptions } from 'ng2-toastr/src/toast-options';
 import { ToastContainer } from 'ng2-toastr/src/toast-container.component';
 
+//AngularFire2
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { environment } from '../environments/environment';
+
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
     // for development
@@ -42,7 +47,9 @@ export function createTranslateLoader(http: HttpClient) {
             }
         }),
         ToastModule.forRoot(),
-        AppRoutingModule
+        AppRoutingModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireDatabaseModule // for database
     ],
     declarations: [AppComponent],
     providers: [AuthGuard,
