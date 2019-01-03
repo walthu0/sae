@@ -962,3 +962,15 @@ CREATE TABLE CategoriaMigratoria (
     descripcion VARCHAR(255) NULL,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE Profesor(
+	id INT AUTO_INCREMENT NOT NULL,
+    idPersona INT NULL,
+PRIMARY KEY (id));
+
+CREATE TABLE ProfesorAsignatura(
+	id INT AUTO_INCREMENT NOT NULL,
+    idProfesor INT NULL,
+	idAsignatura INT NULL,
+	idPeriodoLectivo INT NULL,
+PRIMARY KEY (id));
