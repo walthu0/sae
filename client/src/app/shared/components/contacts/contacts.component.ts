@@ -1,15 +1,23 @@
 import { Persona } from "./../../../entidades/CRUD/Persona";
+import { Carrera } from "./../../../entidades/CRUD/Carrera";
 import { FotoPerfilService } from "app/CRUD/fotoperfil/fotoperfil.service";
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ViewChild  } from "@angular/core";
 import { LoginResult } from "app/entidades/especifico/Login-Result";
 import { PersonaService } from "app/CRUD/persona/persona.service";
+import { ChatCarrerasService } from "app/shared/components/contacts/chat-carreras.service";
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
+import { ChatConsultarSalasService } from "./../contacts/chat-consultar-salas.service";
 
 @Component({
     selector: "app-contacts",
     templateUrl: "./contacts.component.html",
-    styleUrls: ["./contacts.component.scss"]
+    styleUrls: ["./contacts.component.scss"],
+    providers: [ChatCarrerasService, ChatConsultarSalasService ]
 })
 export class ContactsComponent implements OnInit {
+    
+
+    
     busy: Promise<any>;
     showMenu = "";
     personaLogeada: Persona;
@@ -20,9 +28,29 @@ export class ContactsComponent implements OnInit {
     fotoFile: string;
     filtroComunidad: string;
     personasFiltroComunidad = [];
-    constructor(private fotoPerfilDataService: FotoPerfilService, private personaDataService: PersonaService) {}
+    carreras: Carrera[];
+    salaElegida = "TODOScontacts"
+    salas = [];
+   
+
+    constructor(private chatConsultarSalasService: ChatConsultarSalasService, private fotoPerfilDataService: FotoPerfilService, private personaDataService: PersonaService, private chatCarrerasService: ChatCarrerasService) {
+
+       
+    }
 
     ngOnInit() {
+      
+        
+        sessionStorage.setItem("enviarSala", JSON.stringify(this.salaElegida));
+        console.log("OnInit Contacts",this.salaElegida);
+        this.chatConsultarSalasService.getSalas(76).then(
+            r => {
+               this.salas = JSON.parse(r);
+            }
+        ).catch( e=> console.log(e) );
+     
+     
+        
         const logedResult = JSON.parse(
             localStorage.getItem("logedResult")
         ) as LoginResult;
@@ -35,6 +63,8 @@ export class ContactsComponent implements OnInit {
             this.personaLogeada.apellido1 +
             " " +
             this.personaLogeada.apellido2;
+
+           
     }
 
     addExpandClass(element: any) {
@@ -50,6 +80,18 @@ export class ContactsComponent implements OnInit {
             localStorage.getItem("contactSpaceVisibleState")
         ) as Boolean;
         return estado;
+    }
+
+    salaSeleccionada(sala) {
+        
+        sessionStorage.setItem("enviarSala", JSON.stringify(sala+""));
+        console.log("transformacion ",sala+"");
+      //  var nom = this.carreras.map(({ nombre }) => nombre);
+      
+       // this.salaElegida = (nom+"")
+       // console.log("sera ",this.salaElegida);
+       
+
     }
 
     searchPersonas() {
@@ -71,4 +113,5 @@ export class ContactsComponent implements OnInit {
             })
             .catch(error => {});
     }
+   
 }

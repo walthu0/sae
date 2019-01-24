@@ -8,4 +8,5 @@ export class Carrera {
    siglas: string;
    idTipoCarrera: number;
    idModalidadCarrera: number;
+   chats: any[];
 }
