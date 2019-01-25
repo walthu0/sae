@@ -22,10 +22,10 @@ export class ContactsComponent implements OnInit {
     showMenu = "";
     personaLogeada: Persona;
     userName = "";
-    srcFoto: string;
-    srcFotoPersonaSeleccionada: string;
-    fotoNombre: string;
-    fotoType: string;
+    srcFoto: string ='';
+    srcFotoPersonaSeleccionada: string ='';
+    fotoNombre: string ='';
+    fotoType: string ='';
     fotoFile: string;
     filtroComunidad: string;
     personasFiltroComunidad = [];
