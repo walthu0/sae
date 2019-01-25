@@ -27,7 +27,7 @@ export class ChatspaceComponent implements OnInit {
   
 
 
-  salaElegida = 'TODOSchat';
+  salaElegida = 'yavirac';
     busy: Promise<any>;
   showMenu: string = "";
   personaLogeada: Persona;
@@ -86,11 +86,11 @@ export class ChatspaceComponent implements OnInit {
     this.getFotoPerfil();
     this.botonMinimizar();
     this.botonMaximizar();
-    this.cerrar=true;
-    this.cerrar=false
+ 
+    
    this.getMessages();
 
-  
+   this.cerrar=true;
 ;
   }
 

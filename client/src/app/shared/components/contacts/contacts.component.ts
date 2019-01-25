@@ -30,7 +30,7 @@ export class ContactsComponent implements OnInit {
     filtroComunidad: string;
     personasFiltroComunidad = [];
     carreras: Carrera[];
-    salaElegida = "YAVRAC";
+    salaElegida = "yavirac";
     salas: Salas[] = [];
     miembrosSeleccionado = [];
     miembroSeleccionado: Miembro = null;
@@ -49,15 +49,7 @@ export class ContactsComponent implements OnInit {
         sessionStorage.setItem("enviarSala", JSON.stringify(this.salaElegida));
         console.log("OnInit Contacts", this.salaElegida);
         this.personaSolicitada = new Persona();
-        this.chatConsultarSalasService
-            .getSalas(763)
-            .then(r => {
-                this.salas = JSON.parse(r) as Salas[];
-                this.salas.forEach(sala => {
-                    sala.mensajesNuevos = 0;
-                });
-            })
-            .catch(e => console.log(e));
+      
 
         const logedResult = JSON.parse(
             localStorage.getItem("logedResult")
@@ -71,6 +63,17 @@ export class ContactsComponent implements OnInit {
             this.personaLogeada.apellido1 +
             " " +
             this.personaLogeada.apellido2;
+
+            this.chatConsultarSalasService
+            //cambiar por el id de la persona logeada -------------------
+                .getSalas(this.personaLogeada.id)
+                .then(r => {
+                    this.salas = JSON.parse(r) as Salas[];
+                    this.salas.forEach(sala => {
+                        sala.mensajesNuevos = 0;
+                    });
+                })
+                .catch(e => console.log(e));
     }
 
     addExpandClass(element: any) {
