@@ -2,7 +2,6 @@
     <ul class="list-group">
         <a *ngFor = "let sala of salas" class="list-group-item">
             <span class="fa fa-th-list" title="Mostrar Contactos" (click)="mostrarContactos(contactList, sala.miembros)"></span><span style="font-size: 10px;">&nbsp; 
-               <!-- sala selecionada -->
                 <a (click)="salaSeleccionada(sala.idSala)"
                 class="list-group-item" (click)="chatVentana.botonAbrir()">
                 {{sala.nombre}}
@@ -43,16 +42,16 @@
                         <tbody>
                             <tr *ngFor="let actual of miembrosSeleccionado" (click)="onSelect(actual)">
                                 <td>
-                           YAVIRAC          <i class="fa fa-hand-o-right" [hidden]="!estaSeleccionado(actual)"></i>
-                           YAVIRAC      </td>
-                           YAVIRAC      <td>{{actual.nombreCompleto}}</td>
-                           YAVIRAC  </tr>
-                        </tYAVIRAC body>
-                    </tableYAVIRAC >
-                </div>YAVIRAC 
-            </div>YAVIRAC 
-            <div class="colYAVIRAC -8">
-                <div class=YAVIRAC "row" *ngIf="miembroSeleccionado !== null">
+                                    <i class="fa fa-hand-o-right" [hidden]="!estaSeleccionado(actual)"></i>
+                                </td>
+                                <td>{{actual.nombreCompleto}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="row" *ngIf="miembroSeleccionado !== null">
                     <div class="col-12">
                         <table>
                             <tbody>
@@ -74,7 +73,7 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        Domicilio:
+                                       Tel Domicilio:
                                     </th>
                                     <td>
                                         {{personaSolicitada.telefonoDomicilio}}

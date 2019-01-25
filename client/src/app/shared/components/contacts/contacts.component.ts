@@ -30,7 +30,7 @@ export class ContactsComponent implements OnInit {
     filtroComunidad: string;
     personasFiltroComunidad = [];
     carreras: Carrera[];
-    salaElegida = "1";
+    salaElegida = "YAVRAC";
     salas: Salas[] = [];
     miembrosSeleccionado = [];
     miembroSeleccionado: Miembro = null;
@@ -50,7 +50,7 @@ export class ContactsComponent implements OnInit {
         console.log("OnInit Contacts", this.salaElegida);
         this.personaSolicitada = new Persona();
         this.chatConsultarSalasService
-            .getSalas(76)
+            .getSalas(763)
             .then(r => {
                 this.salas = JSON.parse(r) as Salas[];
                 this.salas.forEach(sala => {
