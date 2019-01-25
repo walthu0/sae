@@ -1,14 +1,15 @@
 <nav *ngIf="refreshContactVisibleState()" class="chatspace" [ngClass]="{sidebarPushRight: isActive}">
     <ul class="list-group">
         <a *ngFor = "let sala of salas" class="list-group-item">
-            <span class="fa fa-search" title="Mostrar Contactos" (click)="mostrarContactos(contactList, sala.miembros)"></span><span style="font-size: 10px;">&nbsp; {{sala.nombre}}</span>&nbsp;<span class="badge badge-pill badge-info">12</span>
+            <span class="fa fa-th-list" title="Mostrar Contactos" (click)="mostrarContactos(contactList, sala.miembros)"></span><span style="font-size: 10px;">&nbsp; {{sala.nombre}}</span>&nbsp;
+            <span *ngIf="sala.mensajesNuevos !== 0" class="badge badge-pill badge-info">{{sala.mensajesNuevos}}</span>
         </a>
     </ul>
 </nav>
 
 <app-chatspace></app-chatspace>
 
-<ng-template #contactList let-c="close" let-d="dismiss">
+<ng-template #contactList let-="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">
             Contactos en la Sala
@@ -62,7 +63,7 @@
                                         Celular:
                                     </th>
                                     <td>
-                                        {{miembroSeleccionado.nombreCompleto}}
+                                        {{personaSolicitada.telefonoCelular}}
                                     </td>
                                 </tr>
                                 <tr>
@@ -70,15 +71,23 @@
                                         Domicilio:
                                     </th>
                                     <td>
-                                        {{miembroSeleccionado.nombreCompleto}}
+                                        {{personaSolicitada.telefonoDomicilio}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
-                                        Email:
+                                        Correo Institucional:
                                     </th>
                                     <td>
-                                        {{miembroSeleccionado.nombreCompleto}}
+                                        <a href="mailto:{{personaSolicitada.correoElectronicoInstitucional}}">{{personaSolicitada.correoElectronicoInstitucional}}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Correo Personal:
+                                    </th>
+                                    <td>
+                                        <a href="mailto:{{personaSolicitada.correoElectronicoPersonal}}">{{personaSolicitada.correoElectronicoPersonal}}</a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -86,7 +95,7 @@
                                         Contacto de Emergencia:
                                     </th>
                                     <td>
-                                        {{miembroSeleccionado.nombreCompleto}}
+                                        {{personaSolicitada.nombreContactoEmergencia}} / {{personaSolicitada.parentescoContactoEmergencia}}
                                     </td>
                                 </tr>
                                 <tr>
@@ -94,13 +103,13 @@
                                         Teléfono de Contacto de Emergencia:
                                     </th>
                                     <td>
-                                        {{miembroSeleccionado.nombreCompleto}}
+                                        {{personaSolicitada.telefonoContactoEmergencia}}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="col-12 text-center">
-                            <img class="rounded mt-5" src="assets/images/logos/INSTITUTO TECNOLÓGICO SUPERIOR 24 DE MAYO.png" width="200px" height="200px">
+                            <img class="rounded mt-5" src="{{srcFotoPersonaSeleccionada}}" width="200px" height="200px">
                         </div>
                     </div>
                 </div>

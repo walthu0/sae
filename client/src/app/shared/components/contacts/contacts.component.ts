@@ -1,3 +1,4 @@
+import { FotoPerfil } from './../../../entidades/CRUD/FotoPerfil';
 import { Persona } from "./../../../entidades/CRUD/Persona";
 import { Carrera } from "./../../../entidades/CRUD/Carrera";
 import { FotoPerfilService } from "app/CRUD/fotoperfil/fotoperfil.service";
@@ -7,12 +8,14 @@ import { PersonaService } from "app/CRUD/persona/persona.service";
 import { ChatCarrerasService } from "app/shared/components/contacts/chat-carreras.service";
 import { ChatConsultarSalasService } from "./../contacts/chat-consultar-salas.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { Salas } from "./salas";
+import { Miembro } from "./miembros";
 
 @Component({
     selector: "app-contacts",
     templateUrl: "./contacts.component.html",
     styleUrls: ["./contacts.component.scss"],
-    providers: [ChatCarrerasService, ChatConsultarSalasService]
+    providers: [ChatCarrerasService, ChatConsultarSalasService, PersonaService]
 })
 export class ContactsComponent implements OnInit {
     busy: Promise<any>;
@@ -20,6 +23,7 @@ export class ContactsComponent implements OnInit {
     personaLogeada: Persona;
     userName = "";
     srcFoto: string;
+    srcFotoPersonaSeleccionada: string;
     fotoNombre: string;
     fotoType: string;
     fotoFile: string;
@@ -27,25 +31,31 @@ export class ContactsComponent implements OnInit {
     personasFiltroComunidad = [];
     carreras: Carrera[];
     salaElegida = "TODOScontacts";
-    salas = [];
+    salas: Salas[] = [];
     miembrosSeleccionado = [];
-    miembroSeleccionado: any = null;
+    miembroSeleccionado: Miembro = null;
+    personaSolicitada: Persona = null;
 
     constructor(
         private chatConsultarSalasService: ChatConsultarSalasService,
         private fotoPerfilDataService: FotoPerfilService,
         private personaDataService: PersonaService,
         private chatCarrerasService: ChatCarrerasService,
-        private modalService: NgbModal
+        private modalService: NgbModal,
+        private fotoDataService: FotoPerfilService,
     ) {}
 
     ngOnInit() {
         sessionStorage.setItem("enviarSala", JSON.stringify(this.salaElegida));
         console.log("OnInit Contacts", this.salaElegida);
+        this.personaSolicitada = new Persona();
         this.chatConsultarSalasService
             .getSalas(76)
             .then(r => {
-                this.salas = JSON.parse(r);
+                this.salas = JSON.parse(r) as Salas[];
+                this.salas.forEach(sala => {
+                    sala.mensajesNuevos = 0;
+                });
             })
             .catch(e => console.log(e));
 
@@ -112,8 +122,16 @@ export class ContactsComponent implements OnInit {
             .result.then(result => {}, result => {});
     }
 
-    onSelect(entidadActual): void {
+    onSelect(entidadActual: Miembro): void {
         this.miembroSeleccionado = entidadActual;
+        this.srcFotoPersonaSeleccionada = 'assets/images/user.png';
+        this.personaSolicitada = new Persona();
+        this.personaDataService.get(entidadActual.idPersona).then( r => {
+            this.personaSolicitada = r;
+        }).catch( e => console.log(e) );
+        this.fotoDataService.getFiltrado('idPersona', 'coincide', entidadActual.idPersona.toString()).then( r => {
+            this.srcFotoPersonaSeleccionada = 'data:' + r[0].tipoArchivo + ';base64,' + r[0].adjunto;
+        }).catch( e => console.log(e) );
     }
 
     estaSeleccionado(porVerificar): boolean {
