@@ -27,7 +27,7 @@ export class ChatspaceComponent implements OnInit {
   
 
 
-  salaElegida = 'TODOSchat';
+  salaElegida = '1';
     busy: Promise<any>;
   showMenu: string = "";
   personaLogeada: Persona;

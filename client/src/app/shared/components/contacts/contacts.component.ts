@@ -30,7 +30,7 @@ export class ContactsComponent implements OnInit {
     filtroComunidad: string;
     personasFiltroComunidad = [];
     carreras: Carrera[];
-    salaElegida = "TODOScontacts";
+    salaElegida = "1";
     salas: Salas[] = [];
     miembrosSeleccionado = [];
     miembroSeleccionado: Miembro = null;
@@ -96,6 +96,7 @@ export class ContactsComponent implements OnInit {
         // this.salaElegida = (nom+"")
         // console.log("sera ",this.salaElegida);
     }
+    
 
     searchPersonas() {
         this.personasFiltroComunidad = [];

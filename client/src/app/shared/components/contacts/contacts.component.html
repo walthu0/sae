@@ -1,13 +1,19 @@
 <nav *ngIf="refreshContactVisibleState()" class="chatspace" [ngClass]="{sidebarPushRight: isActive}">
     <ul class="list-group">
         <a *ngFor = "let sala of salas" class="list-group-item">
-            <span class="fa fa-th-list" title="Mostrar Contactos" (click)="mostrarContactos(contactList, sala.miembros)"></span><span style="font-size: 10px;">&nbsp; {{sala.nombre}}</span>&nbsp;
+            <span class="fa fa-th-list" title="Mostrar Contactos" (click)="mostrarContactos(contactList, sala.miembros)"></span><span style="font-size: 10px;">&nbsp; 
+               <!-- sala selecionada -->
+                <a (click)="salaSeleccionada(sala.idSala)"
+                class="list-group-item" (click)="chatVentana.botonAbrir()">
+                {{sala.nombre}}
+</a>
+                </span>&nbsp;
             <span *ngIf="sala.mensajesNuevos !== 0" class="badge badge-pill badge-info">{{sala.mensajesNuevos}}</span>
         </a>
     </ul>
 </nav>
 
-<app-chatspace></app-chatspace>
+<app-chatspace #chatVentana></app-chatspace>
 
 <ng-template #contactList let-="close" let-d="dismiss">
     <div class="modal-header">
@@ -37,16 +43,16 @@
                         <tbody>
                             <tr *ngFor="let actual of miembrosSeleccionado" (click)="onSelect(actual)">
                                 <td>
-                                    <i class="fa fa-hand-o-right" [hidden]="!estaSeleccionado(actual)"></i>
-                                </td>
-                                <td>{{actual.nombreCompleto}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="row" *ngIf="miembroSeleccionado !== null">
+                           YAVIRAC          <i class="fa fa-hand-o-right" [hidden]="!estaSeleccionado(actual)"></i>
+                           YAVIRAC      </td>
+                           YAVIRAC      <td>{{actual.nombreCompleto}}</td>
+                           YAVIRAC  </tr>
+                        </tYAVIRAC body>
+                    </tableYAVIRAC >
+                </div>YAVIRAC 
+            </div>YAVIRAC 
+            <div class="colYAVIRAC -8">
+                <div class=YAVIRAC "row" *ngIf="miembroSeleccionado !== null">
                     <div class="col-12">
                         <table>
                             <tbody>
