@@ -35,7 +35,7 @@ export class ChatspaceComponent implements OnInit {
   srcFotoPerfil: string = "";
   srcFoto: string = "";
   fotoNombre: string = "";
-  fotoType: string = "";
+  fotoType: string = '';
   fotoFile: string = "";
   
   message: string = "";
@@ -146,7 +146,7 @@ CodificarArchivo(event) {this.userName
       reader.readAsDataURL(file);
       reader.onload = () => {
           this.fotoNombre = file.name;
-          this.fotoType = file.type;
+          this.fotoType = file.type ;
 //- split para imagen
 
 
@@ -197,28 +197,38 @@ console.log(imagen)
 
   
     sendMessage() {
-      if(this.salaElegida==null){
-        this.salaElegida="TODOScontacts"
-        console.log("sendMessages ",this.salaElegida);
-      }else{ 
+     
+
+
        this.salaElegida = JSON.parse(sessionStorage.getItem('enviarSala')); 
        //   firebase.database().ref().child("mensajes");  
        console.log("sendMessages ",this.salaElegida);
-      }
+     
 console.log('Envio--------------------------')
 var messageRef = firebase.database().ref().child("mensajes");
 
+
+console.log("fotoTypeeeeeeeeeeeeeeeee      ", this.fotoType);
+if(this.fotoType==null){
+  this.fotoType='image'
+}else{
+  this.fotoType=this.fotoType.split('/')[0]
+}
+
+
+
+
 messageRef.push({
-  nombre: this.userName,
-  mensaje: this.message,
-  fecha: Date.now(),
+  nombre: ''+this.userName,
+  mensaje: ''+this.message,
+  fecha: ''+Date.now(),
   
   salaID: this.salaElegida,
-  foto:this.srcFoto,
-  tipo: this.fotoType.split('/')[0] });
+  foto: ''+this.srcFoto,
+  tipo: ''+this.fotoType});
 
-  this.srcFoto = null;
-  this.message = null;
+  this.srcFoto = '';
+  this.message = '';
   //this.fileInput.nativeElement.value = null;
     }
  

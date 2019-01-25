@@ -26,7 +26,7 @@ export class ContactsComponent implements OnInit {
     srcFotoPersonaSeleccionada: string ='';
     fotoNombre: string ='';
     fotoType: string ='';
-    fotoFile: string;
+    fotoFile: string ='';
     filtroComunidad: string;
     personasFiltroComunidad = [];
     carreras: Carrera[];
