@@ -1,23 +1,20 @@
 import { Persona } from "./../../../entidades/CRUD/Persona";
 import { Carrera } from "./../../../entidades/CRUD/Carrera";
 import { FotoPerfilService } from "app/CRUD/fotoperfil/fotoperfil.service";
-import { Component, OnInit, Input, ViewChild  } from "@angular/core";
+import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { LoginResult } from "app/entidades/especifico/Login-Result";
 import { PersonaService } from "app/CRUD/persona/persona.service";
 import { ChatCarrerasService } from "app/shared/components/contacts/chat-carreras.service";
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { ChatConsultarSalasService } from "./../contacts/chat-consultar-salas.service";
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: "app-contacts",
     templateUrl: "./contacts.component.html",
     styleUrls: ["./contacts.component.scss"],
-    providers: [ChatCarrerasService, ChatConsultarSalasService ]
+    providers: [ChatCarrerasService, ChatConsultarSalasService]
 })
 export class ContactsComponent implements OnInit {
-    
-
-    
     busy: Promise<any>;
     showMenu = "";
     personaLogeada: Persona;
@@ -29,28 +26,29 @@ export class ContactsComponent implements OnInit {
     filtroComunidad: string;
     personasFiltroComunidad = [];
     carreras: Carrera[];
-    salaElegida = "TODOScontacts"
+    salaElegida = "TODOScontacts";
     salas = [];
-   
+    miembrosSeleccionado = [];
+    miembroSeleccionado: any = null;
 
-    constructor(private chatConsultarSalasService: ChatConsultarSalasService, private fotoPerfilDataService: FotoPerfilService, private personaDataService: PersonaService, private chatCarrerasService: ChatCarrerasService) {
-
-       
-    }
+    constructor(
+        private chatConsultarSalasService: ChatConsultarSalasService,
+        private fotoPerfilDataService: FotoPerfilService,
+        private personaDataService: PersonaService,
+        private chatCarrerasService: ChatCarrerasService,
+        private modalService: NgbModal
+    ) {}
 
     ngOnInit() {
-      
-        
         sessionStorage.setItem("enviarSala", JSON.stringify(this.salaElegida));
-        console.log("OnInit Contacts",this.salaElegida);
-        this.chatConsultarSalasService.getSalas(76).then(
-            r => {
-               this.salas = JSON.parse(r);
-            }
-        ).catch( e=> console.log(e) );
-     
-     
-        
+        console.log("OnInit Contacts", this.salaElegida);
+        this.chatConsultarSalasService
+            .getSalas(76)
+            .then(r => {
+                this.salas = JSON.parse(r);
+            })
+            .catch(e => console.log(e));
+
         const logedResult = JSON.parse(
             localStorage.getItem("logedResult")
         ) as LoginResult;
@@ -63,8 +61,6 @@ export class ContactsComponent implements OnInit {
             this.personaLogeada.apellido1 +
             " " +
             this.personaLogeada.apellido2;
-
-           
     }
 
     addExpandClass(element: any) {
@@ -83,15 +79,12 @@ export class ContactsComponent implements OnInit {
     }
 
     salaSeleccionada(sala) {
-        
-        sessionStorage.setItem("enviarSala", JSON.stringify(sala+""));
-        console.log("transformacion ",sala+"");
-      //  var nom = this.carreras.map(({ nombre }) => nombre);
-      
-       // this.salaElegida = (nom+"")
-       // console.log("sera ",this.salaElegida);
-       
+        sessionStorage.setItem("enviarSala", JSON.stringify(sala + ""));
+        console.log("transformacion ", sala + "");
+        //  var nom = this.carreras.map(({ nombre }) => nombre);
 
+        // this.salaElegida = (nom+"")
+        // console.log("sera ",this.salaElegida);
     }
 
     searchPersonas() {
@@ -100,9 +93,7 @@ export class ContactsComponent implements OnInit {
             return;
         }
         this.busy = this.personaDataService
-            .getFiltradoNombreCompleto(
-                this.filtroComunidad
-            )
+            .getFiltradoNombreCompleto(this.filtroComunidad)
             .then(respuesta => {
                 if (JSON.stringify(respuesta) == "[0]") {
                 } else {
@@ -113,5 +104,22 @@ export class ContactsComponent implements OnInit {
             })
             .catch(error => {});
     }
-   
+
+    mostrarContactos(content, contactos) {
+        this.miembrosSeleccionado = contactos;
+        this.modalService
+            .open(content, { size: 'lg' })
+            .result.then(result => {}, result => {});
+    }
+
+    onSelect(entidadActual): void {
+        this.miembroSeleccionado = entidadActual;
+    }
+
+    estaSeleccionado(porVerificar): boolean {
+        if (this.miembroSeleccionado == null) {
+            return false;
+        }
+        return porVerificar === this.miembroSeleccionado;
+    }
 }
