@@ -9,7 +9,7 @@ import { LoginResult } from './../../../entidades/especifico/Login-Result';
 import {FotoPerfilService} from 'app/CRUD/fotoperfil/fotoperfil.service';
 import {ChatObtenerChatSalaService} from 'app/shared/components/chatspace/chat-obtener-chat-sala.service';
 import {ChatObtenerDocenteService} from 'app/shared/components/chatspace/chat-obtener-docente.service';
-
+ 
 // instancia a la Base de datos
 
 import * as firebase from 'firebase';
@@ -22,11 +22,11 @@ import * as firebase from 'firebase';
   providers: [ChatObtenerChatSalaService, ChatObtenerDocenteService]
 })
 export class ChatspaceComponent implements OnInit {
+  
+
+  
 
 
-
-
-    @ViewChild('addAttach') addAttach;
   salaElegida = 'yavirac';
     busy: Promise<any>;
   showMenu: string = "";
@@ -37,10 +37,10 @@ export class ChatspaceComponent implements OnInit {
   fotoNombre: string = "";
   fotoType: string = "";
   fotoFile: string = "";
-
+  
   message: string = "";
-  messages = [];
-
+  messages = []; 
+  
   //variables botones auxiliares maxinizar, cerrar
   minimizar = false;
   cerrar = true;
@@ -59,15 +59,15 @@ export class ChatspaceComponent implements OnInit {
   form: FormGroup;
   //variable idPersona para tomar el usuario
   idPersona: string = "";
-  arrayPersona = [];
+  arrayPersona = []; 
 
   constructor(private fotoPerfilDataService: FotoPerfilService,
     private chatObtenerChatSalaService: ChatObtenerChatSalaService,
     private chatObtenerDocente: ChatObtenerDocenteService,
      private http: Http
-
+    
   ) {
-
+   
     //obtener los mensajes
 //this.getMessages();
 
@@ -77,25 +77,21 @@ export class ChatspaceComponent implements OnInit {
 
   ngOnInit() {
     //cargar a pa persona logueada
-
+    
     const logedResult = JSON.parse(localStorage.getItem('logedResult')) as LoginResult;
-
-
+   
+  
     this.personaLogeada = logedResult.persona;
     this.userName = this.personaLogeada.nombre1 + ' ' + this.personaLogeada.nombre2 + ' ' + this.personaLogeada.apellido1 + ' ' + this.personaLogeada.apellido2;
     this.getFotoPerfil();
     this.botonMinimizar();
     this.botonMaximizar();
-
-
+ 
+    
    this.getMessages();
 
    this.cerrar=true;
 ;
-  }
-
-  addAttachFile() {
-    this.addAttach.nativeElement.click();
   }
 
   addExpandClass(element: any) {
@@ -126,7 +122,7 @@ export class ChatspaceComponent implements OnInit {
 
   botonMinimizar() {
    this.minimizar = true;
-
+   
   }
   botonMaximizar() {
     this.minimizar = false;
@@ -139,11 +135,11 @@ export class ChatspaceComponent implements OnInit {
     this.cerrar = false;
     this.getMessages();
   }
-
+ 
 // metodo cargar archivo
 
 CodificarArchivo(event) {this.userName
-
+  
   var reader = new FileReader();
   if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -179,7 +175,7 @@ if(event.target.files && event.target.files.length > 0) {
       value: reader.result.split(',')[1]
     })
   };
-
+  
 }
 
 }
@@ -189,7 +185,7 @@ let reader = new FileReader();
 reader.onload = (readerEvent) => {
 
   let imageData = (readerEvent.target as any).result;
-
+ 
 };
 
 var imagen =  reader.readAsDataURL(event.target.files[0]);
@@ -199,14 +195,14 @@ console.log(imagen)
 
     //Metodos cabeza
 
-
+  
     sendMessage() {
       if(this.salaElegida==null){
         this.salaElegida="TODOScontacts"
         console.log("sendMessages ",this.salaElegida);
-      }else{
-       this.salaElegida = JSON.parse(sessionStorage.getItem('enviarSala'));
-       //   firebase.database().ref().child("mensajes");
+      }else{ 
+       this.salaElegida = JSON.parse(sessionStorage.getItem('enviarSala')); 
+       //   firebase.database().ref().child("mensajes");  
        console.log("sendMessages ",this.salaElegida);
       }
 console.log('Envio--------------------------')
@@ -216,7 +212,7 @@ messageRef.push({
   nombre: this.userName,
   mensaje: this.message,
   fecha: Date.now(),
-
+  
   salaID: this.salaElegida,
   foto:this.srcFoto,
   tipo: this.fotoType.split('/')[0] });
@@ -225,32 +221,32 @@ messageRef.push({
   this.message = null;
   //this.fileInput.nativeElement.value = null;
     }
-
- getMessages(){
+ 
+ getMessages(){  
 
    if(this.salaElegida==null){
-     this.salaElegida="TODOScontacts"
+     this.salaElegida="yavirac"
      console.log("getMessages aaaaaaaaaaaaaaaaaaaa",this.salaElegida);
      this.cerrar=true;
-   }else{
-    this.salaElegida = JSON.parse(sessionStorage.getItem('enviarSala'));
-    //   firebase.database().ref().child("mensajes");
+   }else{ 
+    this.salaElegida = JSON.parse(sessionStorage.getItem('enviarSala')); 
+    //   firebase.database().ref().child("mensajes");  
     console.log("getMessages aaaaaaaaaaaaaaaaaaaaaaaa",this.salaElegida);
     this.cerrar=true;
    }
-
+  
  var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+""); //.equalTo(this.salaId)
   messagesRef.on("value", (snap) => {
     var data = snap.val();
     this.messages = [];
     for(var key in data){
       this.messages.push(data[key]);
-
+     
     }
-  });
+  });  
   console.log(this.messages);
-  this.salaElegida ="";
-  //   firebase.database().ref().child("mensajes");
+  this.salaElegida =""; 
+  //   firebase.database().ref().child("mensajes");  
   console.log("getMessages ",this.salaElegida);
   this.cerrar=false;
   this.botonMinimizar();
