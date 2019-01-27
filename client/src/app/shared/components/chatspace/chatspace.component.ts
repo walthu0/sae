@@ -13,6 +13,7 @@ import {ChatObtenerDocenteService} from 'app/shared/components/chatspace/chat-ob
 // instancia a la Base de datos
 
 import * as firebase from 'firebase';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 
 @Component({
@@ -64,10 +65,11 @@ export class ChatspaceComponent implements OnInit {
   constructor(private fotoPerfilDataService: FotoPerfilService,
     private chatObtenerChatSalaService: ChatObtenerChatSalaService,
     private chatObtenerDocente: ChatObtenerDocenteService,
-     private http: Http
+     private http: Http,
+     public db: AngularFireDatabase
     
   ) {
-   
+    this.db.list("mensajes").valueChanges()
     //obtener los mensajes
 //this.getMessages();
 
@@ -244,14 +246,22 @@ messageRef.push({
     console.log("getMessages aaaaaaaaaaaaaaaaaaaaaaaa",this.salaElegida);
     this.cerrar=true;
    }
-  
- var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+""); //.equalTo(this.salaId)
-  messagesRef.on("value", (snap) => {
+
+
+
+
+  // this.db.list("mensajes", ref => ref.orderByChild("salaid").equalTo(salaId)).valueChanges()
+ // var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+""); //.equalTo(this.salaId)
+ var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+"")
+ messagesRef.on("value", (snap) => {
     var data = snap.val();
     this.messages = [];
     for(var key in data){
       this.messages.push(data[key]);
+    if((key in data)==false){
+      this.getMessages();
      
+    }
     }
   });  
   console.log(this.messages);
@@ -259,7 +269,6 @@ messageRef.push({
   //   firebase.database().ref().child("mensajes");  
   console.log("getMessages ",this.salaElegida);
   this.cerrar=false;
-  this.botonMinimizar();
-  this.botonMaximizar();
+
 }
 }
