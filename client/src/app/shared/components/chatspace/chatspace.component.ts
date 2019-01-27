@@ -13,7 +13,7 @@ import {ChatObtenerDocenteService} from 'app/shared/components/chatspace/chat-ob
 // instancia a la Base de datos
 
 import * as firebase from 'firebase';
-import { AngularFireDatabase } from 'angularfire2/database';
+
 
 
 @Component({
@@ -52,7 +52,7 @@ export class ChatspaceComponent implements OnInit {
   nombreValue: string = "";
   mensajeValue: string = "";
   timeStamp: Date = new Date();
-  public salaId = '1';
+ 
   mensaje: string = "";
   person: Persona;
 
@@ -65,15 +65,15 @@ export class ChatspaceComponent implements OnInit {
   constructor(private fotoPerfilDataService: FotoPerfilService,
     private chatObtenerChatSalaService: ChatObtenerChatSalaService,
     private chatObtenerDocente: ChatObtenerDocenteService,
-     private http: Http,
-     public db: AngularFireDatabase
+     private http: Http
+    
     
   ) {
-    this.db.list("mensajes").valueChanges()
-    //obtener los mensajes
-//this.getMessages();
-
-//obtener el usuario
+    var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID')
+    messagesRef.on('value', function(snap) {
+     console.log("cambios en BDD");
+    
+    });
 
      }
 
@@ -93,7 +93,7 @@ export class ChatspaceComponent implements OnInit {
    this.getMessages();
 
    this.cerrar=true;
-;
+ 
   }
 
   addExpandClass(element: any) {
@@ -252,16 +252,14 @@ messageRef.push({
 
   // this.db.list("mensajes", ref => ref.orderByChild("salaid").equalTo(salaId)).valueChanges()
  // var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+""); //.equalTo(this.salaId)
- var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+"")
- messagesRef.on("value", (snap) => {
+ var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+"");
+
+ messagesRef.on('value', (snap) => {
     var data = snap.val();
     this.messages = [];
     for(var key in data){
       this.messages.push(data[key]);
-    if((key in data)==false){
-      this.getMessages();
      
-    }
     }
   });  
   console.log(this.messages);
@@ -269,6 +267,9 @@ messageRef.push({
   //   firebase.database().ref().child("mensajes");  
   console.log("getMessages ",this.salaElegida);
   this.cerrar=false;
-
+  this.srcFoto = '';
 }
+
+
+
 }
