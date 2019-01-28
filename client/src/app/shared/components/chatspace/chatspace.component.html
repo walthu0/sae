@@ -4,7 +4,7 @@
         <!--   <input [(ngModel)]="idPersona" placeholder="nombre"/>-->
         <div class="btn-group m-2" role="group" aria-label="Basic example">
             <!-- <label style="text-align: center " [(ngModel)]="salaElegida" >{{salaElegida}}</label>-->
-            <button type="button" class="btn btn-sm btn-info" #refresh>
+            <button type="button" class="btn btn-sm btn-info">
                 <i class="fa fa-refresh"></i>
             </button>
             <button
@@ -69,7 +69,13 @@
 
                                     <div *ngIf="message.tipo != 'image'">
                                         <a href="http://www.google.com">
-                                            <img  src="../../../../assets/google_docs-logo2.jpg"
+                                            <img
+                                            src="../../../../assets/google_docs-logo2.jpg"
+<<<<<<< HEAD
+                                       
+=======
+                                           
+>>>>>>> 71e4720f22e5d475ed2408e1e50037da1e643ad8
                                                 style="width: 100%"
                                             >
                                         </a>
@@ -110,6 +116,8 @@
                             </div>
                         </div>
                     </div>
+                    <div id="pie" style="height: 100px; width: 100%;"></div>
+                    <a href="#pie" #refresh></a>
                 </div>
             </div>
         </div>
