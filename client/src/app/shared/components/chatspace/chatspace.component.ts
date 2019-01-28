@@ -10,6 +10,9 @@ import {FotoPerfilService} from 'app/CRUD/fotoperfil/fotoperfil.service';
 import {ChatObtenerChatSalaService} from 'app/shared/components/chatspace/chat-obtener-chat-sala.service';
 import {ChatObtenerDocenteService} from 'app/shared/components/chatspace/chat-obtener-docente.service';
  
+
+
+import { Observable } from 'rxjs/Observable';
 // instancia a la Base de datos
 
 import * as firebase from 'firebase';
@@ -28,7 +31,7 @@ export class ChatspaceComponent implements OnInit {
   
 
 
-  salaElegida = 'yavirac';
+  salaElegida = 'nulo';
     busy: Promise<any>;
   showMenu: string = "";
   personaLogeada: Persona;
@@ -71,10 +74,6 @@ export class ChatspaceComponent implements OnInit {
   ) {
 
 
-
- 
- 
- 
    // this.db.list("mensajes", ref => ref.orderByChild("salaid").equalTo(salaId)).valueChanges()
   // var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+""); //.equalTo(this.salaId)
   var messagesRef = firebase.database().ref('/mensajes');
@@ -82,6 +81,7 @@ export class ChatspaceComponent implements OnInit {
   messagesRef.on('value', (snap) => {
      var data = snap.val();
    this.getMessages();
+   console.log("cambio en BDD");
    });  
 
     /*
@@ -93,6 +93,11 @@ export class ChatspaceComponent implements OnInit {
 */
      }
 
+
+canActivate(): Observable<boolean> {
+  firebase.auth.apply
+  return /* an Observable<boolean> */
+  }
   ngOnInit() {
     //cargar a pa persona logueada
     
@@ -106,7 +111,7 @@ export class ChatspaceComponent implements OnInit {
     this.botonMaximizar();
  
     
-   this.getMessages();
+   
 
    this.cerrar=true;
  
@@ -151,7 +156,7 @@ export class ChatspaceComponent implements OnInit {
   }
   botonAbrir() {
     this.cerrar = false;
-    this.getMessages();
+  
   }
  
 // metodo cargar archivo
@@ -250,42 +255,42 @@ messageRef.push({
   //this.fileInput.nativeElement.value = null;
     }
  
- getMessages(){  
 
-   if(this.salaElegida==null){
-     this.salaElegida="yavirac"
-     console.log("getMessages aaaaaaaaaaaaaaaaaaaa",this.salaElegida);
-     this.cerrar=true;
-   }else{ 
-    this.salaElegida = JSON.parse(sessionStorage.getItem('enviarSala')); 
-    //   firebase.database().ref().child("mensajes");  
-    console.log("getMessages aaaaaaaaaaaaaaaaaaaaaaaa",this.salaElegida);
-    this.cerrar=true;
+    getMessages(){  
+      this.salaElegida = JSON.parse(sessionStorage.getItem('enviarSala')); 
+      if(this.salaElegida=="nulo"){
+       
+        console.log("noooooooooooooo nulo",this.salaElegida);
+        this.cerrar=true;
+      }else{ 
+        console.log("salaaaaaaaaaaaaaaa",this.salaElegida);
+       
+     // this.db.list("mensajes", ref => ref.orderByChild("salaid").equalTo(salaId)).valueChanges()
+    // var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+""); //.equalTo(this.salaId)
+    var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+"");
+   
+    messagesRef.on('value', (snap) => {
+       var data = snap.val();
+       this.messages = [];
+       for(var key in data){
+         this.messages.push(data[key]);
+        
+       }
+     });  
+     console.log(this.messages);
+     this.salaElegida =""; 
+     //   firebase.database().ref().child("mensajes");  
+     console.log("getMessages ",this.salaElegida);
+     this.botonCerrar();
+   this.botonAbrir();
+
+
+      }
+   
+   
+   
+   
    }
-
-
-
-
-  // this.db.list("mensajes", ref => ref.orderByChild("salaid").equalTo(salaId)).valueChanges()
- // var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+""); //.equalTo(this.salaId)
- var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+"");
-
- messagesRef.on('value', (snap) => {
-    var data = snap.val();
-    this.messages = [];
-    for(var key in data){
-      this.messages.push(data[key]);
-     
-    }
-  });  
-  console.log(this.messages);
-  this.salaElegida =""; 
-  //   firebase.database().ref().child("mensajes");  
-  console.log("getMessages ",this.salaElegida);
-  this.cerrar=false;
-  this.srcFoto = '';
-}
-
-
-
+   
+   
 }

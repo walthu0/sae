@@ -3,7 +3,7 @@
         <a *ngFor = "let sala of salas" class="list-group-item">
             <span class="fa fa-th-list" title="Mostrar Contactos" (click)="mostrarContactos(contactList, sala.miembros)"></span><span style="font-size: 10px;">&nbsp; 
                 <a (click)="salaSeleccionada(sala.idSala)"
-                class="list-group-item" (click)="chatVentana.botonAbrir()">
+                class="list-group-item" (click)="chatVentana.getMessages()">
                 {{sala.nombre}}
 </a>
                 </span>&nbsp;

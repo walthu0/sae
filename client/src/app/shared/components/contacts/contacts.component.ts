@@ -30,7 +30,7 @@ export class ContactsComponent implements OnInit {
     filtroComunidad: string;
     personasFiltroComunidad = [];
     carreras: Carrera[];
-    salaElegida = "yavirac";
+    salaElegida = "nulo";
     salas: Salas[] = [];
     miembrosSeleccionado = [];
     miembroSeleccionado: Miembro = null;
