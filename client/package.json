@@ -49,6 +49,7 @@
         "@types/jasminewd2": "~2.0.3",
         "@types/node": "~8.0.51",
         "codelyzer": "~4.0.1",
+        "angular-file-saver": "^1.1.3",
         "extract-text-webpack-plugin": "^3.0.2",
         "jasmine-core": "~2.8.0",
         "jasmine-spec-reporter": "~4.2.1",
