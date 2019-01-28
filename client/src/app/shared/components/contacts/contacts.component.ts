@@ -163,6 +163,7 @@ export class ContactsComponent implements OnInit {
        acum = snapshot.numChildren();
         console.log("numero de hijos ", acum)
       //  return parseInt(acum);
+      console.log("cambio para subir ")
       return acum;
        });  
        
