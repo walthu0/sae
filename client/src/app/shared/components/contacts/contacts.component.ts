@@ -10,6 +10,9 @@ import { ChatConsultarSalasService } from "./../contacts/chat-consultar-salas.se
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { Salas } from "./salas";
 import { Miembro } from "./miembros";
+import * as firebase from 'firebase';
+import { parse } from 'querystring';
+import { NumberFormatStyle } from '@angular/common';
 
 @Component({
     selector: "app-contacts",
@@ -70,7 +73,11 @@ export class ContactsComponent implements OnInit {
                 .then(r => {
                     this.salas = JSON.parse(r) as Salas[];
                     this.salas.forEach(sala => {
-                        sala.mensajesNuevos = 0;
+                        sala.mensajesNuevos = this.getNumeroMessages(sala.idSala)
+                      console.log("idSala para sumar suma "+sala.idSala)
+                     // sala.mensajesNuevos = 3;
+                        
+                        console.log("Sala suma mensajes nuevos "+sala.mensajesNuevos)
                     });
                 })
                 .catch(e => console.log(e));
@@ -144,4 +151,26 @@ export class ContactsComponent implements OnInit {
         }
         return porVerificar === this.miembroSeleccionado;
     }
-}
+
+
+      getNumeroMessages(idSala: string):any{  
+        console.log("Entro a numero Messages ")
+        let acum: number =0;
+      var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(idSala+"");
+     
+      messagesRef.on('value', (snapshot) => {
+       
+       acum = snapshot.numChildren();
+        console.log("numero de hijos ", acum)
+      //  return parseInt(acum);
+      return acum;
+       });  
+       
+  
+        }
+     
+     
+     
+     
+     }
+
