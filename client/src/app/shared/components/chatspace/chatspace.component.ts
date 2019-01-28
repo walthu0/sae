@@ -69,12 +69,28 @@ export class ChatspaceComponent implements OnInit {
     
     
   ) {
+
+
+
+ 
+ 
+ 
+   // this.db.list("mensajes", ref => ref.orderByChild("salaid").equalTo(salaId)).valueChanges()
+  // var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+""); //.equalTo(this.salaId)
+  var messagesRef = firebase.database().ref('/mensajes');
+ 
+  messagesRef.on('value', (snap) => {
+     var data = snap.val();
+   this.getMessages();
+   });  
+
+    /*
     var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID')
     messagesRef.on('value', function(snap) {
      console.log("cambios en BDD");
-    
+   // this.getMessages();
     });
-
+*/
      }
 
   ngOnInit() {
