@@ -1,296 +1,250 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Http } from '@angular/http';
-import { FormBuilder, FormGroup, Validators,FormsModule } from '@angular/forms';
+import { Component, OnInit, Input, ViewChild } from "@angular/core";
+import { Http } from "@angular/http";
+import {
+    FormBuilder,
+    FormGroup,
+    Validators,
+    FormsModule
+} from "@angular/forms";
 //clases
-import { Persona } from 'app/entidades/CRUD/Persona';
-import { LoginResult } from './../../../entidades/especifico/Login-Result';
+import { Persona } from "app/entidades/CRUD/Persona";
+import { LoginResult } from "./../../../entidades/especifico/Login-Result";
 
 //servicios
-import {FotoPerfilService} from 'app/CRUD/fotoperfil/fotoperfil.service';
-import {ChatObtenerChatSalaService} from 'app/shared/components/chatspace/chat-obtener-chat-sala.service';
-import {ChatObtenerDocenteService} from 'app/shared/components/chatspace/chat-obtener-docente.service';
- 
+import { FotoPerfilService } from "app/CRUD/fotoperfil/fotoperfil.service";
+import { ChatObtenerChatSalaService } from "app/shared/components/chatspace/chat-obtener-chat-sala.service";
+import { ChatObtenerDocenteService } from "app/shared/components/chatspace/chat-obtener-docente.service";
 
-
-import { Observable } from 'rxjs/Observable';
+import { Observable } from "rxjs/Observable";
 // instancia a la Base de datos
 
-import * as firebase from 'firebase';
-
-
+import * as firebase from "firebase";
 
 @Component({
-  selector: 'app-chatspace',
-  templateUrl: './chatspace.component.html',
-  styleUrls: ['./chatspace.component.scss'],
-  providers: [ChatObtenerChatSalaService, ChatObtenerDocenteService]
+    selector: "app-chatspace",
+    templateUrl: "./chatspace.component.html",
+    styleUrls: ["./chatspace.component.scss"],
+    providers: [ChatObtenerChatSalaService, ChatObtenerDocenteService]
 })
 export class ChatspaceComponent implements OnInit {
-  
-
-  
-
-
-  salaElegida = 'nulo';
+    salaElegida = "nulo";
     busy: Promise<any>;
-  showMenu: string = "";
-  personaLogeada: Persona;
-  userName: string = "";
-  srcFotoPerfil: string = "";
-  srcFoto: string = "";
-  fotoNombre: string = "";
-  fotoType: string = '';
-  fotoFile: string = "";
-  
-  message: string = "";
-  messages = []; 
-  
-  //variables botones auxiliares maxinizar, cerrar
-  minimizar = false;
-  cerrar = true;
-  //variables mensajes
+    showMenu: string = "";
+    personaLogeada: Persona;
+    userName: string = "";
+    srcFotoPerfil: string = "";
+    srcFoto: string = "";
+    fotoNombre: string = "";
+    fotoType: string = "";
+    fotoFile: string = "";
 
-  //nombreCarrera: string;
- // nombreMateria: string;
-  nombreValue: string = "";
-  mensajeValue: string = "";
-  timeStamp: Date = new Date();
- 
-  mensaje: string = "";
-  person: Persona;
+    message: string = "";
+    messages = [];
 
-  //cargar archivo
-  form: FormGroup;
-  //variable idPersona para tomar el usuario
-  idPersona: string = "";
-  arrayPersona = []; 
+    //variables botones auxiliares maxinizar, cerrar
+    minimizar = false;
+    cerrar = true;
+    //variables mensajes
 
-  constructor(private fotoPerfilDataService: FotoPerfilService,
-    private chatObtenerChatSalaService: ChatObtenerChatSalaService,
-    private chatObtenerDocente: ChatObtenerDocenteService,
-     private http: Http
-    
-    
-  ) {
+    //nombreCarrera: string;
+    // nombreMateria: string;
+    nombreValue: string = "";
+    mensajeValue: string = "";
+    timeStamp: Date = new Date();
 
+    mensaje: string = "";
+    person: Persona;
 
-   // this.db.list("mensajes", ref => ref.orderByChild("salaid").equalTo(salaId)).valueChanges()
-  // var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+""); //.equalTo(this.salaId)
-  var messagesRef = firebase.database().ref('/mensajes');
- 
-  messagesRef.on('value', (snap) => {
-     var data = snap.val();
-   this.getMessages();
-   console.log("cambio en BDD");
-   });  
+    //cargar archivo
+    form: FormGroup;
+    //variable idPersona para tomar el usuario
+    idPersona: string = "";
+    arrayPersona = [];
+    messagesRef: any;
+    @ViewChild('refresh') refresh;
+    @ViewChild('fileInput') fileInput;
 
-    /*
-    var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID')
-    messagesRef.on('value', function(snap) {
-     console.log("cambios en BDD");
-   // this.getMessages();
-    });
-*/
-     }
-
-
-canActivate(): Observable<boolean> {
-  firebase.auth.apply
-  return /* an Observable<boolean> */
-  }
-  ngOnInit() {
-    //cargar a pa persona logueada
-    
-    const logedResult = JSON.parse(localStorage.getItem('logedResult')) as LoginResult;
-   
-  
-    this.personaLogeada = logedResult.persona;
-    this.userName = this.personaLogeada.nombre1 + ' ' + this.personaLogeada.nombre2 + ' ' + this.personaLogeada.apellido1 + ' ' + this.personaLogeada.apellido2;
-    this.getFotoPerfil();
-    this.botonMinimizar();
-    this.botonMaximizar();
- 
-    
-   
-
-   this.cerrar=true;
- 
-  }
-
-  addExpandClass(element: any) {
-    if (element === this.showMenu) {
-        this.showMenu = '0';
-    } else {
-        this.showMenu = element;
+    constructor(
+        private fotoPerfilDataService: FotoPerfilService,
+        private chatObtenerChatSalaService: ChatObtenerChatSalaService,
+        private chatObtenerDocente: ChatObtenerDocenteService,
+        private http: Http
+    ) {
+        this.messagesRef = firebase.database().ref("/mensajes");
     }
-  }
 
-  getFotoPerfil() {
-    this.srcFotoPerfil = 'assets/images/user.png';
-    this.busy = this.fotoPerfilDataService.getFiltrado('idPersona', 'coincide', this.personaLogeada.id.toString())
-        .then(respuesta => {
-            if (JSON.stringify(respuesta) == '[0]') {
-                return;
-            }
-            this.fotoFile = respuesta[0].adjunto;
-            this.fotoNombre = respuesta[0].nombreArchivo;
-            this.fotoType = respuesta[0].tipoArchivo;
-            this.srcFotoPerfil = 'data:' + this.fotoType + ';base64,' + this.fotoFile;
-        })
-        .catch(error => {
+    canActivate(): Observable<boolean> {
+        firebase.auth.apply;
+        return;
+    }
 
+    checkForMessages() {
+        this.messagesRef.on("value", snap => {
+            let data = snap.val();
+            this.getMessages();
+            console.log("cambio en BDD");
+            this.refresh.nativeElement.click();
         });
-  }
-
-
-  botonMinimizar() {
-   this.minimizar = true;
-   
-  }
-  botonMaximizar() {
-    this.minimizar = false;
-   }
-
-  botonCerrar() {
-    this.cerrar = true;
-  }
-  botonAbrir() {
-    this.cerrar = false;
-  
-  }
- 
-// metodo cargar archivo
-
-CodificarArchivo(event) {this.userName
-  
-  var reader = new FileReader();
-  if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-          this.fotoNombre = file.name;
-          this.fotoType = file.type ;
-//- split para imagen
-
-
-//  split = cadena.substring(inicio, fin);
-
-// console.log(subCadena); // la consola devolverá: texto
-
-
-
-          this.fotoFile = reader.result.split(',')[1];
-          this.srcFoto = 'data:' + this.fotoType + ';base64,' + this.fotoFile;
-          console.log(this.srcFoto)
-      };
-  }
-}
-
-onFileChange(event) {
-let reader = new FileReader();
-if(event.target.files && event.target.files.length > 0) {
-  let file = event.target.files[0];
-  reader.readAsDataURL(file);
-  reader.onload = () => {
-    this.form.get('avatar').setValue({
-      filename: file.name,
-      filetype: file.type,
-      value: reader.result.split(',')[1]
-    })
-  };
-  
-}
-
-}
-
-processWebImage(event) {
-let reader = new FileReader();
-reader.onload = (readerEvent) => {
-
-  let imageData = (readerEvent.target as any).result;
- 
-};
-
-var imagen =  reader.readAsDataURL(event.target.files[0]);
-console.log(imagen)
-}
-
-
-    //Metodos cabeza
-
-  
-    sendMessage() {
-     
-
-
-       this.salaElegida = JSON.parse(sessionStorage.getItem('enviarSala')); 
-       //   firebase.database().ref().child("mensajes");  
-       console.log("sendMessages ",this.salaElegida);
-     
-console.log('Envio--------------------------')
-var messageRef = firebase.database().ref().child("mensajes");
-
-
-console.log("fotoTypeeeeeeeeeeeeeeeee      ", this.fotoType);
-if(this.fotoType==null){
-  this.fotoType='image'
-}else{
-  this.fotoType=this.fotoType.split('/')[0]
-}
-
-
-
-
-messageRef.push({
-  nombre: ''+this.userName,
-  mensaje: ''+this.message,
-  fecha: ''+Date.now(),
-  
-  salaID: this.salaElegida,
-  foto: ''+this.srcFoto,
-  tipo: ''+this.fotoType});
-
-  this.srcFoto = '';
-  this.message = '';
-  //this.fileInput.nativeElement.value = null;
     }
- 
 
-    getMessages(){  
-      this.salaElegida = JSON.parse(sessionStorage.getItem('enviarSala')); 
-      if(this.salaElegida=="nulo"){
-       
-        console.log("noooooooooooooo nulo",this.salaElegida);
-        this.cerrar=true;
-      }else{ 
-        console.log("salaaaaaaaaaaaaaaa",this.salaElegida);
-       
-     // this.db.list("mensajes", ref => ref.orderByChild("salaid").equalTo(salaId)).valueChanges()
-    // var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+""); //.equalTo(this.salaId)
-    var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(this.salaElegida+"");
-   
-    messagesRef.on('value', (snap) => {
-       var data = snap.val();
-       this.messages = [];
-       for(var key in data){
-         this.messages.push(data[key]);
-        
-       }
-     });  
-     console.log(this.messages);
-     this.salaElegida =""; 
-     //   firebase.database().ref().child("mensajes");  
-     console.log("getMessages ",this.salaElegida);
-     this.botonCerrar();
-   this.botonAbrir();
+    ngOnInit() {
+        this.checkForMessages();
+        const logedResult = JSON.parse(
+            localStorage.getItem("logedResult")
+        ) as LoginResult;
+
+        this.personaLogeada = logedResult.persona;
+        this.userName =
+            this.personaLogeada.nombre1 +
+            " " +
+            this.personaLogeada.nombre2 +
+            " " +
+            this.personaLogeada.apellido1 +
+            " " +
+            this.personaLogeada.apellido2;
+        this.getFotoPerfil();
+        this.botonMinimizar();
+        this.botonMaximizar();
+
+        this.cerrar = true;
+    }
+
+    addExpandClass(element: any) {
+        if (element === this.showMenu) {
+            this.showMenu = "0";
+        } else {
+            this.showMenu = element;
+        }
+    }
+
+    addAttachFile() {
+        this.fileInput.nativeElement.click();
+    }
+
+    getFotoPerfil() {
+        this.srcFotoPerfil = "assets/images/user.png";
+        this.busy = this.fotoPerfilDataService
+            .getFiltrado(
+                "idPersona",
+                "coincide",
+                this.personaLogeada.id.toString()
+            )
+            .then(respuesta => {
+                if (JSON.stringify(respuesta) == "[0]") {
+                    return;
+                }
+                this.fotoFile = respuesta[0].adjunto;
+                this.fotoNombre = respuesta[0].nombreArchivo;
+                this.fotoType = respuesta[0].tipoArchivo;
+                this.srcFotoPerfil =
+                    "data:" + this.fotoType + ";base64," + this.fotoFile;
+            })
+            .catch(error => {});
+    }
+
+    botonMinimizar() {
+        this.minimizar = true;
+    }
+    botonMaximizar() {
+        this.minimizar = false;
+    }
+
+    botonCerrar() {
+        this.cerrar = true;
+    }
+    botonAbrir() {
+        this.cerrar = false;
+    }
 
 
-      }
-   
-   
-   
-   
-   }
-   
-   
+    CodificarArchivo(event) {
+        this.userName;
+
+        let reader = new FileReader();
+        if (event.target.files && event.target.files.length > 0) {
+            const file = event.target.files[0];
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                this.fotoNombre = file.name;
+                this.fotoType = file.type;
+                this.fotoFile = reader.result.split(",")[1];
+                this.srcFoto =
+                    "data:" + this.fotoType + ";base64," + this.fotoFile;
+            };
+        }
+    }
+
+    onFileChange(event) {
+        let reader = new FileReader();
+        if (event.target.files && event.target.files.length > 0) {
+            let file = event.target.files[0];
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                this.form.get("avatar").setValue({
+                    filename: file.name,
+                    filetype: file.type,
+                    value: reader.result.split(",")[1]
+                });
+            };
+        }
+    }
+
+    processWebImage(event) {
+        let reader = new FileReader();
+        reader.onload = readerEvent => {
+            let imageData = (readerEvent.target as any).result;
+        };
+
+        let imagen = reader.readAsDataURL(event.target.files[0]);
+        console.log(imagen);
+    }
+
+    sendMessage() {
+        this.salaElegida = JSON.parse(sessionStorage.getItem("enviarSala"));
+        let messageRef = firebase
+            .database()
+            .ref()
+            .child("mensajes");
+        if (this.fotoType == null) {
+            this.fotoType = "image";
+        } else {
+            this.fotoType = this.fotoType.split("/")[0];
+        }
+        messageRef.push({
+            nombre: "" + this.userName,
+            mensaje: "" + this.message,
+            fecha: "" + Date.now(),
+
+            salaID: this.salaElegida,
+            foto: "" + this.srcFoto,
+            tipo: "" + this.fotoType
+        });
+
+        this.srcFoto = "";
+        this.message = "";
+    }
+
+    getMessages() {
+        this.salaElegida = JSON.parse(sessionStorage.getItem("enviarSala"));
+        if (this.salaElegida == "nulo") {
+            this.cerrar = true;
+        } else {
+            let messagesRef = firebase
+                .database()
+                .ref("/mensajes")
+                .orderByChild("salaID")
+                .equalTo(this.salaElegida + "");
+
+            messagesRef.on("value", snap => {
+                let data = snap.val();
+                this.messages = [];
+                for (let key in data) {
+                    this.messages.push(data[key]);
+                }
+            });
+            this.salaElegida = "";
+            this.botonCerrar();
+            this.botonAbrir();
+        }
+    }
 }

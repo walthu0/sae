@@ -4,6 +4,9 @@
         <!--   <input [(ngModel)]="idPersona" placeholder="nombre"/>-->
         <div class="btn-group m-2" role="group" aria-label="Basic example">
             <!-- <label style="text-align: center " [(ngModel)]="salaElegida" >{{salaElegida}}</label>-->
+            <button type="button" class="btn btn-sm btn-info" #refresh>
+                <i class="fa fa-refresh"></i>
+            </button>
             <button
                 *ngIf="minimizar == false"
                 type="button"
@@ -36,7 +39,10 @@
     <div *ngIf="minimizar == false" class="col-12">
         <div class="col-12">
             <div class="row">
-                <div class="chat-message-box" style="overflow-y: auto; overflow-x: hidden; ">
+                <div
+                    class="chat-message-box"
+                    style="overflow-y: auto; overflow-x: hidden; "
+                >
                     <div class="cuadroMensajes">
                         <!--Directivas para fltrar mensajes-->
                         <div *ngFor="let message of messages">
@@ -61,16 +67,14 @@
                                         alt=""
                                     />
 
-                                 
-                                        <div *ngIf="message.tipo != 'image'">
-                                            <a href="http://www.google.com">
+                                    <div *ngIf="message.tipo != 'image'">
+                                        <a href="http://www.google.com">
                                             <img
                                                 src="../../../../assets/google_docs-logo2.jpg"
                                                 style="width: 100%"
                                             />
                                         </a>
-                                        </div>
-                                   
+                                    </div>
                                 </div>
                             </div>
                             <!--
@@ -97,15 +101,12 @@
                                         alt=""
                                     />
 
-                                  
-                                        <div *ngIf="message.tipo != 'image'">
-                                            <img 
-                                                src="../../../../assets/google_docs-logo2.jpg"
-                                                style="width: 100%"
-                                            />
-                                      
-                                        </div>
-                                   
+                                    <div *ngIf="message.tipo != 'image'">
+                                        <img
+                                            src="../../../../assets/google_docs-logo2.jpg"
+                                            style="width: 100%"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -135,15 +136,12 @@
                     </button>
                 </div>
                 <div class="col-6">
-                    
-                        <input type="file" ion-button block color="dark" id="foto" placeholder="Fotografía" #fileInput
-                        (change)="CodificarArchivo($event)" accept="*">
-                    <!--    
-                   
-                        <input
+                    <input
                         type="file"
+                        ion-button
+                        block
+                        color="dark"
                         id="foto"
-                        #addAttach
                         placeholder="Fotografía"
                         #fileInput
                         (change)="CodificarArchivo($event)"
@@ -155,7 +153,6 @@
                         class="btn btn-primary col-12"
                         (click)="addAttachFile()"
                     >
-                 
                         <i class="fa fa-paperclip"></i>
                     </button>
                     -->
