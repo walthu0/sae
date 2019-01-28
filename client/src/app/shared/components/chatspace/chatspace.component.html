@@ -114,50 +114,52 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
-            <div class="row">
-                <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Escriba su mensaje"
-                    [(ngModel)]="message"
-                />
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="row mt-1">
-                <div class="col-6">
-                    <button
-                        type="button"
-                        class="btn btn-success col-12"
-                        (click)="sendMessage()"
-                    >
-                        <i class="fa fa-fw fa-send"></i>
-                    </button>
-                </div>
-                <div class="col-6">
+        <form>
+            <div class="col-12">
+                <div class="row">
                     <input
-                        type="file"
-                        ion-button
-                        block
-                        color="dark"
-                        id="foto"
-                        placeholder="Fotografía"
-                        #fileInput
-                        (change)="CodificarArchivo($event)"
-                        accept="*"
-                        [hidden]="true"
+                        type="text"
+                        name="message"
+                        id="message"
+                        class="form-control"
+                        placeholder="Escriba su mensaje"
+                        [(ngModel)]="message"
                     />
-                    <button
-                        type="button"
-                        class="btn btn-primary col-12"
-                        (click)="addAttachFile()"
-                    >
-                        <i class="fa fa-paperclip"></i>
-                    </button>
-                    -->
                 </div>
             </div>
-        </div>
+            <div class="col-12">
+                <div class="row mt-1">
+                    <div class="col-6">
+                        <button
+                            type="submit"
+                            class="btn btn-success col-12"
+                            (click)="sendMessage()"
+                        >
+                            <i class="fa fa-fw fa-send"></i>
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <input
+                            type="file"
+                            id="foto"
+                            name="foto"
+                            placeholder="Fotografía"
+                            #fileInput
+                            (change)="CodificarArchivo($event)"
+                            accept="*"
+                            [hidden]="true"
+                        />
+                        <button
+                            type="button"
+                            class="btn btn-primary col-12"
+                            (click)="addAttachFile()"
+                        >
+                            <i class="fa fa-paperclip"></i>
+                        </button>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
