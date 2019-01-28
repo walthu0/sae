@@ -13,6 +13,7 @@ import { Miembro } from "./miembros";
 import * as firebase from 'firebase';
 import { parse } from 'querystring';
 import { NumberFormatStyle } from '@angular/common';
+import { isThisTypeNode } from 'typescript';
 
 @Component({
     selector: "app-contacts",
@@ -25,11 +26,11 @@ export class ContactsComponent implements OnInit {
     showMenu = "";
     personaLogeada: Persona;
     userName = "";
-    srcFoto: string ='';
-    srcFotoPersonaSeleccionada: string ='';
-    fotoNombre: string ='';
-    fotoType: string ='';
-    fotoFile: string ='';
+    srcFoto: string = '';
+    srcFotoPersonaSeleccionada: string = '';
+    fotoNombre: string = '';
+    fotoType: string = '';
+    fotoFile: string = '';
     filtroComunidad: string;
     personasFiltroComunidad = [];
     carreras: Carrera[];
@@ -46,13 +47,13 @@ export class ContactsComponent implements OnInit {
         private chatCarrerasService: ChatCarrerasService,
         private modalService: NgbModal,
         private fotoDataService: FotoPerfilService,
-    ) {}
+    ) { }
 
     ngOnInit() {
         sessionStorage.setItem("enviarSala", JSON.stringify(this.salaElegida));
         console.log("OnInit Contacts", this.salaElegida);
         this.personaSolicitada = new Persona();
-      
+
 
         const logedResult = JSON.parse(
             localStorage.getItem("logedResult")
@@ -67,20 +68,14 @@ export class ContactsComponent implements OnInit {
             " " +
             this.personaLogeada.apellido2;
 
-            this.chatConsultarSalasService
+        this.chatConsultarSalasService
             //cambiar por el id de la persona logeada -------------------
-                .getSalas(this.personaLogeada.id)
-                .then(r => {
-                    this.salas = JSON.parse(r) as Salas[];
-                    this.salas.forEach(sala => {
-                        sala.mensajesNuevos = this.getNumeroMessages(sala.idSala)
-                      console.log("idSala para sumar suma "+sala.idSala)
-                     // sala.mensajesNuevos = 3;
-                        
-                        console.log("Sala suma mensajes nuevos "+sala.mensajesNuevos)
-                    });
-                })
-                .catch(e => console.log(e));
+            .getSalas(this.personaLogeada.id)
+            .then(r => {
+                this.salas = JSON.parse(r) as Salas[];
+                this.getNumeroMessages();
+            })
+            .catch(e => console.log(e));
     }
 
     addExpandClass(element: any) {
@@ -106,7 +101,7 @@ export class ContactsComponent implements OnInit {
         // this.salaElegida = (nom+"")
         // console.log("sera ",this.salaElegida);
     }
-    
+
 
     searchPersonas() {
         this.personasFiltroComunidad = [];
@@ -123,26 +118,26 @@ export class ContactsComponent implements OnInit {
                     });
                 }
             })
-            .catch(error => {});
+            .catch(error => { });
     }
 
     mostrarContactos(content, contactos) {
         this.miembrosSeleccionado = contactos;
         this.modalService
             .open(content, { size: 'lg' })
-            .result.then(result => {}, result => {});
+            .result.then(result => { }, result => { });
     }
 
     onSelect(entidadActual: Miembro): void {
         this.miembroSeleccionado = entidadActual;
         this.srcFotoPersonaSeleccionada = 'assets/images/user.png';
         this.personaSolicitada = new Persona();
-        this.personaDataService.get(entidadActual.idPersona).then( r => {
+        this.personaDataService.get(entidadActual.idPersona).then(r => {
             this.personaSolicitada = r;
-        }).catch( e => console.log(e) );
-        this.fotoDataService.getFiltrado('idPersona', 'coincide', entidadActual.idPersona.toString()).then( r => {
+        }).catch(e => console.log(e));
+        this.fotoDataService.getFiltrado('idPersona', 'coincide', entidadActual.idPersona.toString()).then(r => {
             this.srcFotoPersonaSeleccionada = 'data:' + r[0].tipoArchivo + ';base64,' + r[0].adjunto;
-        }).catch( e => console.log(e) );
+        }).catch(e => console.log(e));
     }
 
     estaSeleccionado(porVerificar): boolean {
@@ -153,25 +148,13 @@ export class ContactsComponent implements OnInit {
     }
 
 
-      getNumeroMessages(idSala: string):any{  
-        console.log("Entro a numero Messages ")
-        let acum: number =0;
-      var messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(idSala+"");
-     
-      messagesRef.on('value', (snapshot) => {
-       
-       acum = snapshot.numChildren();
-        console.log("numero de hijos ", acum)
-      //  return parseInt(acum);
-      console.log("cambio para subir ")
-      return acum;
-       });  
-       
-  
-        }
-     
-     
-     
-     
-     }
+    getNumeroMessages(): any {
+        this.salas.forEach(sala => {
+            let messagesRef = firebase.database().ref('/mensajes').orderByChild('salaID').equalTo(sala.idSala.toString());
+            messagesRef.on('value', (snapshot) => {
+                sala.mensajesNuevos = snapshot.numChildren();
+            });
+        });
+    }
+}
 
