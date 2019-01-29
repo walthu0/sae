@@ -60,20 +60,24 @@
                                     {{ message.mensaje }}
                                 </div>
                                 <div class="col-12 text-justify">
-                                    <img
-                                        *ngIf="message.foto"
-                                        src="{{ message.foto }}"
-                                        style="width: 100%"
-                                        alt=""
-                                    />
-
-                                    <div *ngIf="message.tipo != 'image'">
-                                        <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
-                                            <img
-                                                src="../../../../assets/google_docs-logo2.jpg"
-                                                style="width: 100%"
-                                            />
-                                        </span>
+                                    <div *ngIf = "message.foto">
+                                        <div *ngIf="message.tipo.split('/')[0] === 'image'">
+                                            <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
+                                                <img
+                                                    src="data:{{message.tipo}};base64,{{ message.foto}}"
+                                                    style="width: 100%"
+                                                    alt=""
+                                                />
+                                            </span>
+                                        </div>
+                                        <div *ngIf="message.tipo.split('/')[0] !== 'image'">
+                                                <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
+                                                    <img
+                                                        src="../../../../assets/google_docs-logo2.jpg"
+                                                        style="width: 100%"
+                                                    />
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -94,22 +98,25 @@
                                     {{ message.mensaje }}
                                 </div>
                                 <div class="col-12 text-justify">
-                                    <img
-                                        *ngIf="message.foto"
-                                        src="{{ message.foto }}"
-                                        style="width: 100%"
-                                        alt=""
-                                    />
-                                    
-                                    <div *ngIf="message.tipo != 'image'">
+                                    <div *ngIf = "message.foto">
+                                        <div *ngIf="message.tipo.split('/')[0] === 'image'">
                                             <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
-                                        <img
-                                            src="../../../../assets/google_docs-logo2.jpg"
-                                            style="width: 100%"
-                                        />
-                                    </span>
+                                                <img
+                                                    src="data:{{message.tipo}};base64,{{ message.foto}}"
+                                                    style="width: 100%"
+                                                    alt=""
+                                                />
+                                            </span>
+                                        </div>
+                                        <div *ngIf="message.tipo.split('/')[0] !== 'image'">
+                                                <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
+                                                    <img
+                                                        src="../../../../assets/google_docs-logo2.jpg"
+                                                        style="width: 100%"
+                                                    />
+                                            </span>
+                                        </div>
                                     </div>
-                                
                                 </div>
                             </div>
                         </div>

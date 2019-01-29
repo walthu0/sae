@@ -62,9 +62,9 @@ export class ChatspaceComponent implements OnInit {
     idPersona: string = "";
     arrayPersona = [];
     messagesRef: any;
-    
-    @ViewChild('refresh') refresh;
-    @ViewChild('fileInput') fileInput;
+
+    @ViewChild("refresh") refresh;
+    @ViewChild("fileInput") fileInput;
 
     constructor(
         private fotoPerfilDataService: FotoPerfilService,
@@ -158,7 +158,6 @@ export class ChatspaceComponent implements OnInit {
         this.cerrar = false;
     }
 
-
     CodificarArchivo(event) {
         this.userName;
 
@@ -170,14 +169,7 @@ export class ChatspaceComponent implements OnInit {
                 this.fotoNombre = file.name;
                 this.fotoType = file.type;
                 this.fotoFile = reader.result.split(",")[1];
-
-                if (this.fotoType.split("/")[0] == 'image') {
-                    this.srcFoto =
-                    "data:" + this.fotoType + ";base64," + this.fotoFile;
-                } else {
-                    this.srcFoto = this.fotoFile;
-                }
-                
+                this.srcFoto = this.fotoFile;
             };
         }
     }
@@ -198,7 +190,6 @@ export class ChatspaceComponent implements OnInit {
     }
 
     processWebImage(event) {
-
         let reader = new FileReader();
         reader.onload = readerEvent => {
             let imageData = (readerEvent.target as any).result;
@@ -209,51 +200,38 @@ export class ChatspaceComponent implements OnInit {
     }
 
     sendMessage() {
-       let empty = "";
-      console.log(this.message.trim.length);
-   
-     
-if(((this.message.trim)==null)){
-    alert("No puede enviar un mensaje vacio");
-    this.message = "";
-    }else{
-      
+        let empty = "";
+        console.log(this.message.trim.length);
 
-        this.salaElegida = JSON.parse(sessionStorage.getItem("enviarSala"));
-        let messageRef = firebase
-            .database()
-            .ref()
-            .child("mensajes");
-        if (this.fotoType == null) {
-            this.fotoType = "image";
-            this.fotoNombre = "documento";
+        if (this.message.trim == null) {
+            alert("No puede enviar un mensaje vacio");
+            this.message = "";
         } else {
-            if((this.fotoType.split("/")[0])=="image"){
-                this.fotoType = this.fotoType.split("/")[0];
-                this.fotoNombre;
-            }else{
-                this.fotoType = this.fotoType;
-                this.fotoNombre = this.fotoNombre;
-
+            this.salaElegida = JSON.parse(sessionStorage.getItem("enviarSala"));
+            let messageRef = firebase
+                .database()
+                .ref()
+                .child("mensajes");
+            if (this.fotoType == null) {
+                this.fotoType = "image";
+                this.fotoNombre = "documento";
             }
-            
+            messageRef.push({
+                nombre: "" + this.userName,
+                mensaje: "" + this.message,
+                fecha: "" + Date.now(),
+
+                salaID: this.salaElegida,
+                foto: "" + this.srcFoto,
+                nomDoc: "" + this.fotoNombre,
+                tipo: "" + this.fotoType
+            });
+
+            this.srcFoto = "";
+            this.message = "";
+            this.fotoType = "image";
+            this.fotoNombre = "";
         }
-        messageRef.push({
-            nombre: "" + this.userName,
-            mensaje: "" + this.message,
-            fecha: "" + Date.now(),
-
-            salaID: this.salaElegida,
-            foto: "" + this.srcFoto,
-            nomDoc: "" + this.fotoNombre,
-            tipo: "" + this.fotoType
-        });
-
-        this.srcFoto = "";
-        this.message = "";
-        this.fotoType = "image";
-        this.fotoNombre = "";
-    }
     }
 
     getMessages() {
@@ -279,30 +257,25 @@ if(((this.message.trim)==null)){
             this.botonAbrir();
         }
     }
-    downloadFile(base:string, tipo:string, nomDoc:string) {
-        console.log("nombre: "+base+" tipo: "+tipo+" nomDoc "+nomDoc);
-   
-     
- 
-  let reader = new FileReader();
+    downloadFile(base: string, tipo: string, nomDoc: string) {
+        console.log("nombre: " + base + " tipo: " + tipo + " nomDoc " + nomDoc);
 
- 
-      
-      const byteCharacters = atob(base);
-    
-      const byteNumbers = new Array(byteCharacters.length);
-     
-      for (let i = 0; i < byteCharacters.length; i++) {
-      
-          byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-    
-      const blob = new Blob([byteArray], { type: tipo+'' });
-     
-      saveAs(blob, nomDoc+"");
-  }
-  /*
+        let reader = new FileReader();
+
+        const byteCharacters = atob(base);
+
+        const byteNumbers = new Array(byteCharacters.length);
+
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+
+        const blob = new Blob([byteArray], { type: tipo + "" });
+
+        saveAs(blob, nomDoc + "");
+    }
+    /*
   downloadFile() {
     const byteCharacters = atob(this.recursoDigital.adjunto);
     const byteNumbers = new Array(byteCharacters.length);
