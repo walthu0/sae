@@ -4,7 +4,7 @@
         <!--   <input [(ngModel)]="idPersona" placeholder="nombre"/>-->
         <div class="btn-group m-2" role="group" aria-label="Basic example">
             <!-- <label style="text-align: center " [(ngModel)]="salaElegida" >{{salaElegida}}</label>-->
-            <button type="button" class="btn btn-sm btn-info">
+            <button type="button" class="btn btn-sm btn-info" #refresh>
                 <i class="fa fa-refresh"></i>
             </button>
             <button
@@ -68,17 +68,12 @@
                                     />
 
                                     <div *ngIf="message.tipo != 'image'">
-                                        <a href="http://www.google.com">
+                                        <span (click)="downloadFile({{ message.foto }})">
                                             <img
-                                            src="../../../../assets/google_docs-logo2.jpg"
-<<<<<<< HEAD
-                                       
-=======
-                                           
->>>>>>> 71e4720f22e5d475ed2408e1e50037da1e643ad8
+                                                src="../../../../assets/google_docs-logo2.jpg"
                                                 style="width: 100%"
-                                            >
-                                        </a>
+                                            />
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -105,68 +100,67 @@
                                         style="width: 100%"
                                         alt=""
                                     />
-
+                                    
                                     <div *ngIf="message.tipo != 'image'">
+                                            <span (click)="downloadFile(message.foto)">
                                         <img
                                             src="../../../../assets/google_docs-logo2.jpg"
                                             style="width: 100%"
                                         />
+                                    </span>
                                     </div>
+                                
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="pie" style="height: 100px; width: 100%;"></div>
-                    <a href="#pie" #refresh></a>
                 </div>
             </div>
         </div>
-        <form>
-            <div class="col-12">
-                <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Escriba su mensaje"
+                    [(ngModel)]="message"
+                />
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row mt-1">
+                <div class="col-6">
+                    <button
+                        type="button"
+                        class="btn btn-success col-12"
+                        (click)="sendMessage()"
+                    >
+                        <i class="fa fa-fw fa-send"></i>
+                    </button>
+                </div>
+                <div class="col-6">
                     <input
-                        type="text"
-                        name="message"
-                        id="message"
-                        class="form-control"
-                        placeholder="Escriba su mensaje"
-                        [(ngModel)]="message"
+                        type="file"
+                        ion-button
+                        block
+                        color="dark"
+                        id="foto"
+                        placeholder="Fotografía"
+                        #fileInput
+                        (change)="CodificarArchivo($event)"
+                        accept="*"
+                        [hidden]="true"
                     />
+                    <button
+                        type="button"
+                        class="btn btn-primary col-12"
+                        (click)="addAttachFile()"
+                    >
+                        <i class="fa fa-paperclip"></i>
+                    </button>
+                    -->
                 </div>
             </div>
-            <div class="col-12">
-                <div class="row mt-1">
-                    <div class="col-6">
-                        <button
-                            type="submit"
-                            class="btn btn-success col-12"
-                            (click)="sendMessage()"
-                        >
-                            <i class="fa fa-fw fa-send"></i>
-                        </button>
-                    </div>
-                    <div class="col-6">
-                        <input
-                            type="file"
-                            id="foto"
-                            name="foto"
-                            placeholder="Fotografía"
-                            #fileInput
-                            (change)="CodificarArchivo($event)"
-                            accept="*"
-                            [hidden]="true"
-                        />
-                        <button
-                            type="button"
-                            class="btn btn-primary col-12"
-                            (click)="addAttachFile()"
-                        >
-                            <i class="fa fa-paperclip"></i>
-                        </button>
-                        -->
-                    </div>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 </div>

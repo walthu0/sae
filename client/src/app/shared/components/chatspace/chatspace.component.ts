@@ -19,6 +19,7 @@ import { Observable } from "rxjs/Observable";
 // instancia a la Base de datos
 
 import * as firebase from "firebase";
+import { saveAs } from "file-saver/FileSaver";
 
 @Component({
     selector: "app-chatspace",
@@ -247,4 +248,56 @@ export class ChatspaceComponent implements OnInit {
             this.botonAbrir();
         }
     }
+    downloadFile(documento:object) {
+        console.log("documentooooooooo "+documento);
+let nombreDocumento: string;
+let tipoDocumento: string;
+let baseDocumento: string;
+let rutaDocumento: string;
+/*
+      let reader = new FileReader();
+      if (documento.length > 0) {
+          const file = documento;
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+            nombreDocumento = file.name; 
+            tipoDocumento = file.type;
+            baseDocumento = reader.result.split(",")[1];
+            rutaDocumento =
+                  "data:" + this.fotoType + ";base64," + this.fotoFile;
+          };
+          
+      }
+
+      console.log("nombre "+nombreDocumento+" tipo "+tipoDocumento+" base "+baseDocumento+" ruta "+rutaDocumento);
+
+      
+      
+      const byteCharacters = atob(tipoDocumento);
+      console.log("entro al 2");
+      const byteNumbers = new Array(byteCharacters.length);
+      console.log("entro al 3");
+      for (let i = 0; i < byteCharacters.length; i++) {
+        console.log("entro al bucle");
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      console.log("entro al 4");
+      const blob = new Blob([byteArray], { type: ''+tipoDocumento+'' });
+      console.log("entro al 5");
+      saveAs(blob, nombreDocumento);
+      */
+  }
+  /*
+  downloadFile() {
+    const byteCharacters = atob(this.recursoDigital.adjunto);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: ''+this.recursoDigital.tipoArchivo+'' });
+    saveAs(blob, this.recursoDigital.nombreArchivo);
+}
+*/
 }
