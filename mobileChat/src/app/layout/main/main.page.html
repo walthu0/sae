@@ -1,6 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>main</ion-title>
+    <ion-row>
+      <ion-col col-6><ion-title>Ignug Chat</ion-title></ion-col>
+      <ion-col col-6 text-right><ion-chip>
+          <ion-avatar>
+            <img [src]="srcFoto">
+          </ion-avatar>
+          <ion-label>{{user.nombre1}} {{user.nombre2}} {{user.apellido1}} {{user.apellido2}}</ion-label>
+        </ion-chip></ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-header>
 

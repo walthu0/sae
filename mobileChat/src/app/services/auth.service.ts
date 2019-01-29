@@ -17,4 +17,14 @@ export class AuthService {
       error.json();
     });
   }
+
+  foto(id: number): Promise<any> {
+    const data = {columna: 'idPersona', tipo_filtro: 'coincide', filtro: id};
+    return this.http.post(environment.api + 'fotoperfil/leer_filtrado', JSON.stringify(data)).toPromise()
+    .then( r =>
+      r.json()
+    ).catch( error => {
+      error.json();
+    });
+  }
 }

@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { MainPage } from './main.page';
+import { HttpModule } from '@angular/http';
 
 const routes: Routes = [
   {
@@ -18,9 +20,11 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
+    HttpModule,
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [MainPage]
+  declarations: [MainPage],
+  providers: [AuthService]
 })
 export class MainPageModule {}
