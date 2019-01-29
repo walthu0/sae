@@ -85,7 +85,9 @@ export class ChatspaceComponent implements OnInit {
             let data = snap.val();
             this.getMessages();
             console.log("cambio en BDD");
-            this.refresh.nativeElement.click();
+            if ( typeof this.refresh !== 'undefined') {
+                this.refresh.nativeElement.click();
+            }
         });
     }
 
