@@ -62,6 +62,7 @@ export class ChatspaceComponent implements OnInit {
     idPersona: string = "";
     arrayPersona = [];
     messagesRef: any;
+    
     @ViewChild('refresh') refresh;
     @ViewChild('fileInput') fileInput;
 
@@ -169,8 +170,14 @@ export class ChatspaceComponent implements OnInit {
                 this.fotoNombre = file.name;
                 this.fotoType = file.type;
                 this.fotoFile = reader.result.split(",")[1];
-                this.srcFoto =
+
+                if (this.fotoType.split("/")[0] == 'image') {
+                    this.srcFoto =
                     "data:" + this.fotoType + ";base64," + this.fotoFile;
+                } else {
+                    this.srcFoto = this.fotoFile;
+                }
+                
             };
         }
     }
@@ -191,6 +198,7 @@ export class ChatspaceComponent implements OnInit {
     }
 
     processWebImage(event) {
+
         let reader = new FileReader();
         reader.onload = readerEvent => {
             let imageData = (readerEvent.target as any).result;
@@ -201,6 +209,16 @@ export class ChatspaceComponent implements OnInit {
     }
 
     sendMessage() {
+       let empty = "";
+      console.log(this.message.trim.length);
+   
+     
+if(((this.message.trim)==null)){
+    alert("No puede enviar un mensaje vacio");
+    this.message = "";
+    }else{
+      
+
         this.salaElegida = JSON.parse(sessionStorage.getItem("enviarSala"));
         let messageRef = firebase
             .database()
@@ -208,8 +226,17 @@ export class ChatspaceComponent implements OnInit {
             .child("mensajes");
         if (this.fotoType == null) {
             this.fotoType = "image";
+            this.fotoNombre = "documento";
         } else {
-            this.fotoType = this.fotoType.split("/")[0];
+            if((this.fotoType.split("/")[0])=="image"){
+                this.fotoType = this.fotoType.split("/")[0];
+                this.fotoNombre;
+            }else{
+                this.fotoType = this.fotoType;
+                this.fotoNombre = this.fotoNombre;
+
+            }
+            
         }
         messageRef.push({
             nombre: "" + this.userName,
@@ -218,11 +245,15 @@ export class ChatspaceComponent implements OnInit {
 
             salaID: this.salaElegida,
             foto: "" + this.srcFoto,
+            nomDoc: "" + this.fotoNombre,
             tipo: "" + this.fotoType
         });
 
         this.srcFoto = "";
         this.message = "";
+        this.fotoType = "image";
+        this.fotoNombre = "";
+    }
     }
 
     getMessages() {
@@ -248,45 +279,28 @@ export class ChatspaceComponent implements OnInit {
             this.botonAbrir();
         }
     }
-    downloadFile(documento:object) {
-        console.log("documentooooooooo "+documento);
-let nombreDocumento: string;
-let tipoDocumento: string;
-let baseDocumento: string;
-let rutaDocumento: string;
-/*
-      let reader = new FileReader();
-      if (documento.length > 0) {
-          const file = documento;
-          reader.readAsDataURL(file);
-          reader.onload = () => {
-            nombreDocumento = file.name; 
-            tipoDocumento = file.type;
-            baseDocumento = reader.result.split(",")[1];
-            rutaDocumento =
-                  "data:" + this.fotoType + ";base64," + this.fotoFile;
-          };
-          
-      }
+    downloadFile(base:string, tipo:string, nomDoc:string) {
+        console.log("nombre: "+base+" tipo: "+tipo+" nomDoc "+nomDoc);
+   
+     
+ 
+  let reader = new FileReader();
 
-      console.log("nombre "+nombreDocumento+" tipo "+tipoDocumento+" base "+baseDocumento+" ruta "+rutaDocumento);
-
+ 
       
-      
-      const byteCharacters = atob(tipoDocumento);
-      console.log("entro al 2");
+      const byteCharacters = atob(base);
+    
       const byteNumbers = new Array(byteCharacters.length);
-      console.log("entro al 3");
+     
       for (let i = 0; i < byteCharacters.length; i++) {
-        console.log("entro al bucle");
+      
           byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
       const byteArray = new Uint8Array(byteNumbers);
-      console.log("entro al 4");
-      const blob = new Blob([byteArray], { type: ''+tipoDocumento+'' });
-      console.log("entro al 5");
-      saveAs(blob, nombreDocumento);
-      */
+    
+      const blob = new Blob([byteArray], { type: tipo+'' });
+     
+      saveAs(blob, nomDoc+"");
   }
   /*
   downloadFile() {
