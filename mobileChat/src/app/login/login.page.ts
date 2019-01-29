@@ -28,11 +28,21 @@ export class LoginPage implements OnInit {
       this.esperando = true;
       this.busy = this.authDataServise.login(this.email, this.password).then( r => {
         this.esperando = false;
-        sessionStorage.setItem('api-token', r.token);
-        sessionStorage.setItem('isLoggedin', 'true');
-        const userData = { id: r.id, name: r.name };
-        sessionStorage.setItem('user', JSON.stringify(userData));
-        this.router.navigate(['/main']);
+        if (r.idRol === 0) {
+          this.presentToastWithOptions('Credenciales Incorrectos', 'middle', 'Aceptar', 'danger').then(
+            r_rollNull => {
+              r_rollNull.onDidDismiss().then( r2 => {
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+              });
+            }
+          );
+        } else {
+          sessionStorage.setItem('isLoggedin', 'true');
+          const userData = { idRol: r.idRol, Persona: r.Persona };
+          sessionStorage.setItem('user', JSON.stringify(userData));
+          this.router.navigate(['/main']);
+        }
       }).catch( e => {
         this.esperando = false;
         this.presentToastWithOptions('Credenciales Incorrectos', 'middle', 'Aceptar', 'danger').then(
@@ -43,38 +53,6 @@ export class LoginPage implements OnInit {
             });
           }
         );
-      });
-    }
-  }
-
-  password_recovery() {
-    if ( !this.esperando ) {
-      this.esperando = true;
-      this.busy = this.authDataServise.password_recovery_request(this.email).then( r => {
-        this.esperando = false;
-        if ( r === 'Success!') {
-          this.presentToastWithOptions('Para completar el proceso, revisa tu correo', 'middle', 'Aceptar', 'success').then(
-            r_success => {
-              r_success.onDidDismiss().then( r2 => {
-                this.password = '';
-                this.email = '';
-              });
-            }
-          );
-        } else {
-          this.presentToastWithOptions('La dirección de correo proporcionada, no corresponde a cuenta alguna', 'middle', 'Aceptar', 'warning')
-          .then(
-            r_fail => {
-              r_fail.onDidDismiss().then( r2 => {
-                this.password = '';
-                this.email = '';
-              });
-            }
-          );
-        }
-      }).catch( e => {
-        console.log(e);
-        this.esperando = false;
       });
     }
   }
