@@ -1,0 +1,33 @@
+<div class="login-container">
+  <div class="login-box">
+    <ion-row class="logo-row">
+      <ion-col col-2></ion-col>
+      <ion-col col-8 text-center>
+        <img col-12 src="assets/images/accounts.png"/>
+      </ion-col>
+      <ion-col col-2></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <ion-label>Correo Electrónico:</ion-label>
+            <ion-input type="email" placeholder="Correo Electrónico" [(ngModel)]="email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Contraseña:</ion-label>
+            <ion-input type="password" placeholder="Contraseña" [(ngModel)]="password"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="esperando">
+            <ion-label text-center color="primary">Espere ... </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-center>
+        <ion-button color="success" (click)="login()">Ingresar</ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+</div>
