@@ -1,4 +1,4 @@
-import { AuthService } from './../../services/auth.service';
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +8,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { MainPage } from './main.page';
 import { HttpModule } from '@angular/http';
-
+import { AuthService } from './../../services/auth.service';
+import { SalasService } from './../../services/salas.service';
 const routes: Routes = [
   {
     path: '',
@@ -25,6 +26,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [MainPage],
-  providers: [AuthService]
+  providers: [AuthService, SalasService]
 })
 export class MainPageModule {}

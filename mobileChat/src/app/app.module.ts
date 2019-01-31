@@ -8,6 +8,13 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+// firebase
+
+
+import { saveAs } from "file-saver/FileSaver";
+
+//clases
+import { ClasePersona } from "../app/clases/Clase-Persona";
 
 @NgModule({
   declarations: [AppComponent],

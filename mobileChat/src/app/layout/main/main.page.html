@@ -17,4 +17,109 @@
 
 <ion-content padding>
 
+        <ion-item>
+            <ion-label>
+                  SALAS
+                </ion-label>
+                <ion-select [interface]="'action-sheet'" [(ngModel)]="sala"  (ionChange)="seleccionarSala(sala)">
+             <div *ngFor="let sala of salas"  >
+                 
+                   <ion-select-option >
+                
+                        {{sala.idSala}} 
+                    </ion-select-option>
+                   
+
+                    
+                   </div> 
+                  
+                </ion-select>
+              
+
+            </ion-item>
+        
+    <!-- Caja de Mensajes-->
+  <div
+  class="chat-message-box"
+  style="overflow-y: auto; overflow-x: hidden; "
+>
+  <div class="cuadroMensajes">
+      <!--Directivas para fltrar mensajes-->
+      <div *ngFor="let message of messages">
+          <div
+          *ngIf="message.nombre == userName"
+              class="bubble-me"
+          >
+              <div class="col-6 writter">
+                  <strong>{{ message.nombre }}</strong>
+              </div>
+              <div class="col-6 writter">
+                  {{ message.fecha | date: "medium" }}
+              </div>
+              <div class="col-12 text-justify">
+                  {{ message.mensaje }}
+              </div>
+              <div class="col-12 text-justify">
+                  <div *ngIf = "message.foto">
+                      <div *ngIf="message.tipo.split('/')[0] === 'image'">
+                          <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
+                              <img
+                                  src="data:{{message.tipo}};base64,{{ message.foto}}"
+                                  style="width: 100%"
+                                  alt=""
+                              />
+                          </span>
+                      </div>
+                      <div *ngIf="message.tipo.split('/')[0] !== 'image'">
+                              <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
+                                  <img
+                                      src="assets/google_docs-logo2.jpg"
+                                      style="width: 100%"
+                                  />
+                          </span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!--
+              Sus Mensajes
+         -->
+          <div
+          *ngIf="message.nombre != userName"
+              class="bubble-others"
+          >
+              <div class="col-6 writter">
+                  <strong>{{ message.nombre }}</strong>
+              </div>
+              <div class="col-6 writter">
+                  {{ message.fecha | date: "medium" }}
+              </div>
+              <div class="col-12 text-justify">
+                  {{ message.mensaje }}
+              </div>
+              <div class="col-12 text-justify">
+                  <div *ngIf = "message.foto">
+                      <div *ngIf="message.tipo.split('/')[0] === 'image'">
+                          <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
+                              <img
+                                  src="data:{{message.tipo}};base64,{{ message.foto}}"
+                                  style="width: 100%"
+                                  alt=""
+                              />
+                          </span>
+                      </div>
+                      <div *ngIf="message.tipo.split('/')[0] !== 'image'">
+                              <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
+                                  <img
+                                      src="assets/google_docs-logo2.jpg"
+                                      style="width: 100%"
+                                  />
+                          </span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
 </ion-content>
