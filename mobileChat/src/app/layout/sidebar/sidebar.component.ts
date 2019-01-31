@@ -24,7 +24,7 @@ export class SidebarComponent implements OnInit {
   }
 
   salaSeleccionada(sala: any) {
-    console.log(sala);
+    sessionStorage.setItem('idSala', JSON.stringify(sala.idSala));
   }
 
   salaContactos(sala: any) {

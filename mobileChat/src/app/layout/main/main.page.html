@@ -23,35 +23,13 @@
 </ion-header>
 
 <ion-content padding>
-
-        <ion-item>
-            <ion-label>
-                  SALAS
-                </ion-label>
-                <ion-select [interface]="'action-sheet'" [(ngModel)]="sala"  (ionChange)="seleccionarSala(sala)">
-             <div *ngFor="let sala of salas"  >
-                 
-                   <ion-select-option  (click)='openFilters()'>
-                
-                        {{sala.idSala}} 
-                    </ion-select-option>
-                   
-
-                    
-                   </div> 
-                  
-                </ion-select>
-              
-
-            </ion-item>
-        
-    <!-- Caja de Mensajes-->
   <div
   class="chat-message-box"
   style="overflow-y: auto; overflow-x: hidden; "
 >
   <div class="cuadroMensajes">
       <!--Directivas para fltrar mensajes-->
+      <div *ngIf="isSalaSelected()"> HOLA </div>
       <div *ngFor="let message of messages">
           <div
           *ngIf="message.nombre == userName"
