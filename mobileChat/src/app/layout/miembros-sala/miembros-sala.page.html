@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title><strong>Miembros de la Sala - {{sala.nombre}}</strong></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item-sliding *ngFor="let miembro of sala.miembros">
+      <ion-item>
+        <ion-avatar>
+          <img *ngIf="miembroSeleccionado !== miembro || fotoSeleccionado.tipoArchivo === null" src="assets/images/user.png">
+          <img *ngIf="miembroSeleccionado === miembro && fotoSeleccionado.tipoArchivo !== null" src="data:{{fotoSeleccionado.tipoArchivo}};base64,{{fotoSeleccionado.adjunto}}">
+        </ion-avatar>
+        <ion-label (click)="seleccionarMiembro(miembro)">&nbsp;
+          <span *ngIf="miembroSeleccionado !== miembro">{{miembro.nombreCompleto}}</span>
+          <strong *ngIf="miembroSeleccionado === miembro">{{miembro.nombreCompleto}}</strong></ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="success">
+          <ion-icon name="call"></ion-icon>&nbsp;Llamar
+        </ion-item-option>
+        <ion-item-option color="warning">
+          <ion-icon name="mail"></ion-icon>&nbsp;Correo
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
