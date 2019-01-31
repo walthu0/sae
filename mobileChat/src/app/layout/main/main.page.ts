@@ -18,7 +18,7 @@ import { Salas } from "../../clases/salas";
 import { SalasService } from "../../services/salas.service";
 // instancia a la Base de datos
 import * as firebase from 'firebase';
-import { userInfo } from 'os';
+
 
 
 
@@ -76,9 +76,10 @@ export class MainPage implements OnInit {
 
    
   seleccionarSala(sala:Salas){
-    console.log("entro 2")
+    console.log("entro "+sala.idSala)
+
     this.salaElegida= sala.idSala;
-    console.log('Carrera es ', sala);
+
   }
   ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem('user')).Persona;
