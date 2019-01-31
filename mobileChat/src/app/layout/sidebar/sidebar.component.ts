@@ -23,4 +23,12 @@ export class SidebarComponent implements OnInit {
     }).catch( e => console.log(e) );
   }
 
+  salaSeleccionada(sala: any) {
+    console.log(sala);
+  }
+
+  salaContactos(sala: any) {
+    console.log(sala.miembros);
+  }
+
 }
