@@ -1,17 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-row>
-      <ion-col col-6><ion-title>Ignug Chat</ion-title></ion-col>
-      <ion-col col-6 text-right>
-        <ion-chip>
-          <ion-avatar>
+    <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title
+      ><span
+        ><img
+          src="./../../../assets/images/logo.png"
+          height="30px"
+          width="auto"
+          style="margin-top: 5px;"/></span
+          >
+    </ion-title>
+    <ion-chip slot="end">
+        <ion-avatar>
             <img [src]="srcFoto">
-          </ion-avatar>
-          <ion-label>{{user.nombre1}} {{user.nombre2}} {{user.apellido1}} {{user.apellido2}}</ion-label>
-          <ion-icon name="close" (click)="logout()"></ion-icon>
-        </ion-chip>
-      </ion-col>
-    </ion-row>
+        </ion-avatar>
+        <ion-label>{{user.nombre1}} {{user.nombre2}} {{user.apellido1}} {{user.apellido2}}</ion-label>
+        <ion-icon name="close" (click)="logout()"></ion-icon>
+    </ion-chip>
   </ion-toolbar>
 </ion-header>
 
@@ -65,7 +72,7 @@
                           <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
                               <img
                                   src="data:{{message.tipo}};base64,{{ message.foto}}"
-                                  style="width: 100%"
+                                  width="auto" height="100px"
                                   alt=""
                               />
                           </span>
@@ -74,7 +81,7 @@
                               <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
                                   <img
                                       src="assets/google_docs-logo2.jpg"
-                                      style="width: 100%"
+                                      width="auto" height="50px"
                                   />
                           </span>
                       </div>
@@ -103,7 +110,7 @@
                           <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
                               <img
                                   src="data:{{message.tipo}};base64,{{ message.foto}}"
-                                  style="width: 100%"
+                                  width="auto" height="100px"
                                   alt=""
                               />
                           </span>
@@ -112,7 +119,7 @@
                               <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
                                   <img
                                       src="assets/google_docs-logo2.jpg"
-                                      style="width: 100%"
+                                      width="auto" height="50px"
                                   />
                           </span>
                       </div>

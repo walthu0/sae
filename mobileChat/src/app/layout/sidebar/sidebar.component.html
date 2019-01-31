@@ -1,0 +1,11 @@
+<ion-list>
+    <ion-menu-toggle auto-hide="false" *ngFor="let sala of salas">
+      <ion-item [routerLink]="'/main'">
+        <ion-icon slot="start" name="contacts"></ion-icon>
+        <ion-label>
+          {{sala.nombre}}
+        </ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+  </ion-list>
+  

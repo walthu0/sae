@@ -125,7 +125,7 @@ export class MainPage implements OnInit {
         reader.onload = () => {
             this.fotoNombre = file.name;
             this.fotoType = file.type;
-            this.fotoFile = reader.result.split(",")[1];
+            this.fotoFile = reader.result.toString().split(",")[1];
             this.srcFoto = this.fotoFile;
         };
     }
@@ -141,7 +141,7 @@ onFileChange(event) {
                 filename: file.name,
                 filetype: file.type,
                
-                value: reader.result.split(",")[1]
+                value: reader.result.toString().split(",")[1]
             });
         };
         console.log("tipo de archivo "+file.type);
