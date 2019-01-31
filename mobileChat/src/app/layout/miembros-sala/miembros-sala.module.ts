@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { MiembrosSalaPage } from './miembros-sala.page';
 import { HttpModule } from '@angular/http';
+import { CallNumber } from "@ionic-native/call-number/ngx";
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
     HttpModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [MiembrosSalaPage]
+  declarations: [MiembrosSalaPage],
+  providers: [CallNumber]
 })
 export class MiembrosSalaPageModule {}

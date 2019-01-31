@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { environment } from 'src/environments/environment.prod';
+import { CallNumber } from "@ionic-native/call-number/ngx";
 
 @Component({
   selector: 'app-miembros-sala',
@@ -12,8 +13,10 @@ export class MiembrosSalaPage implements OnInit {
   sala: any;
   miembroSeleccionado: any;
   fotoSeleccionado: any;
-
-  constructor(private http: Http) { }
+  personaSeleccionada: any;
+  isPersonaSeleccionada: Boolean = false;
+  constructor(private http: Http,
+    private callNumber: CallNumber) { }
 
   ngOnInit() {
     this.refreshSala();
@@ -31,6 +34,17 @@ export class MiembrosSalaPage implements OnInit {
     this.miembroSeleccionado = miembro;
     this.fotoSeleccionado = {tipoArchivo: null};
     this.getFotoPerfil(miembro.idPersona);
+    this.getMiembroSeleccionadoInfo(miembro.idPersona);
+  }
+
+  getMiembroSeleccionadoInfo(id: number) {
+    this.isPersonaSeleccionada = false;
+    this.http.get(environment.api + 'persona/leer?id=' + id.toString()).toPromise().then(
+      r => {
+        this.isPersonaSeleccionada = true;
+        this.personaSeleccionada = r.json()[0];
+      }
+    ).catch( e => console.log (e) );
   }
 
   getFotoPerfil(id: number) {
@@ -39,5 +53,14 @@ export class MiembrosSalaPage implements OnInit {
         this.fotoSeleccionado = r.json()[0];
       }
     ).catch( e => console.log (e) );
+  }
+
+  makeCall(telefono: string) {
+    this.callNumber
+      .callNumber(telefono, true)
+      .then(res => {})
+      .catch(err => {
+        console.log(err);
+      });
   }
 }
