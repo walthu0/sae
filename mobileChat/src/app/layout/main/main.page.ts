@@ -71,22 +71,35 @@ export class MainPage implements OnInit {
         console.log("salas " + this.salas[0]);
       })
       .catch(e => console.log(e));
+
+
   }
 
-  seleccionarSala(sala: Salas) {
-    console.log("entro " + sala);
+ 
+  checkForMessages() {
+      
+  
+  this.messagesRef = firebase
+    .database()
+    .ref("/mensajes")
+    .orderByChild("salaID")
+    .equalTo(this.salaElegida);
+    this.messagesRef.on("value", snap => {
+        let data = snap.val();
+        this.getMessages();
+        console.log("cambio en BDD");
+        if ( typeof this.refresh !== 'undefined') {
+            this.refresh.nativeElement.click();
+        }
+    });
+}
 
-    this.salaElegida = sala + "";
-  }
 
-  openFilters() {
-    console.log("sera");
-  }
   ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem("user")).Persona;
     this.getFotoPerfil();
-    this.getMessages();
-    console.log(this.user.nombre1);
+  
+   
   }
 
   getFotoPerfil() {
@@ -145,11 +158,13 @@ export class MainPage implements OnInit {
   }
 
   getMessages() {
+   
+    this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
     let messagesRef = firebase
       .database()
       .ref("/mensajes")
       .orderByChild("salaID")
-      .equalTo(this.salaElegida + "");
+      .equalTo(this.salaElegida);
 
     messagesRef.on("value", snap => {
       let data = snap.val();
@@ -180,13 +195,15 @@ export class MainPage implements OnInit {
 
   sendMessage() {
     let empty = "";
-    console.log(this.message);
+
 
     if (this.message.trim == null) {
       alert("No puede enviar un mensaje vacio");
       this.message = "";
     } else {
-      //this.salaElegida = JSON.parse(sessionStorage.getItem("enviarSala"));
+
+        this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
+     
       let messageRef = firebase
         .database()
         .ref()
@@ -216,9 +233,13 @@ export class MainPage implements OnInit {
 
   isSalaSelected(): Boolean {
       if (JSON.parse(sessionStorage.getItem('idSala')) === null) {
+          this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
+          this.checkForMessages();
           return false;
       }
       this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
+      this.checkForMessages();
       return true;
+    
   }
 }
