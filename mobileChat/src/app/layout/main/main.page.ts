@@ -216,9 +216,9 @@ export class MainPage implements OnInit {
 
   isSalaSelected(): Boolean {
       if (JSON.parse(sessionStorage.getItem('idSala')) === null) {
-          this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
           return false;
       }
+      this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
       return true;
   }
 }
