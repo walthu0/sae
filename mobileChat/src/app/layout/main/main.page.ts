@@ -65,6 +65,8 @@ export class MainPage implements OnInit {
      
       ) {
         this.user = JSON.parse(sessionStorage.getItem('user')).Persona;
+        this.userName = this.user.nombre1+" "+this.user.nombre2+" "+this.user.apellido1+" "+this.user.apellido2;
+        console.log(this.userName);
         this.salaService.getSalas(this.user.id)
         .then(r => {
             this.salas = JSON.parse(r) as Salas[];
@@ -76,10 +78,14 @@ export class MainPage implements OnInit {
 
    
   seleccionarSala(sala:Salas){
-    console.log("entro "+sala.idSala)
+    console.log("entro "+sala)
 
-    this.salaElegida= sala.idSala;
+    this.salaElegida= sala+"";
 
+  }
+
+  openFilters(){
+      console.log("sera")
   }
   ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem('user')).Persona;
@@ -109,7 +115,39 @@ export class MainPage implements OnInit {
     sessionStorage.clear();
     this.router.navigate(['/login']);
   }
-  
+  CodificarArchivo(event) {
+    this.userName;
+
+    let reader = new FileReader();
+    if (event.target.files && event.target.files.length > 0) {
+        const file = event.target.files[0];
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            this.fotoNombre = file.name;
+            this.fotoType = file.type;
+            this.fotoFile = reader.result.split(",")[1];
+            this.srcFoto = this.fotoFile;
+        };
+    }
+}
+
+onFileChange(event) {
+    let reader = new FileReader();
+    if (event.target.files && event.target.files.length > 0) {
+        let file = event.target.files[0];
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            this.form.get("avatar").setValue({
+                filename: file.name,
+                filetype: file.type,
+               
+                value: reader.result.split(",")[1]
+            });
+        };
+        console.log("tipo de archivo "+file.type);
+    }
+}
+
     getMessages() {
      
             let messagesRef = firebase
@@ -126,7 +164,7 @@ export class MainPage implements OnInit {
                 }
             });
            
-         console.log("get "+this.messages);
+    
         
     }
     downloadFile(base: string, tipo: string, nomDoc: string) {
@@ -147,4 +185,41 @@ export class MainPage implements OnInit {
 
         saveAs(blob, nomDoc + "");
     }
+
+    sendMessage() {
+        let empty = "";
+        console.log(this.message);
+
+        if (this.message.trim == null) {
+            alert("No puede enviar un mensaje vacio");
+            this.message = "";
+        } else {
+            //this.salaElegida = JSON.parse(sessionStorage.getItem("enviarSala"));
+            let messageRef = firebase
+                .database()
+                .ref()
+                .child("mensajes");
+                //validacion tipo nulo
+            if (this.fotoType === "") {
+                this.fotoType = "image";
+                this.fotoNombre = "documento";
+            }
+            messageRef.push({
+                nombre: "" + this.userName,
+                mensaje: "" + this.message,
+                fecha: "" + Date.now(),
+
+                salaID: this.salaElegida,
+                foto: "" + this.srcFoto,
+                nomDoc: "" + this.fotoNombre,
+                tipo: "" + this.fotoType
+            });
+
+            this.srcFoto = "";
+            this.message = "";
+            this.fotoType = "image";
+            this.fotoNombre = "";
+        }
+    }
+
 }
