@@ -98,8 +98,7 @@ export class MainPage implements OnInit {
   ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem("user")).Persona;
     this.getFotoPerfil();
-  
-   
+    this.isSalaSelected();
   }
 
   getFotoPerfil() {
@@ -233,13 +232,12 @@ export class MainPage implements OnInit {
 
   isSalaSelected(): Boolean {
       if (JSON.parse(sessionStorage.getItem('idSala')) === null) {
-          this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
+          this.salaElegida = "yavirac";
           this.checkForMessages();
           return false;
       }
       this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
       this.checkForMessages();
       return true;
-    
   }
 }

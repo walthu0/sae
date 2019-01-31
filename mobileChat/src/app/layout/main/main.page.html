@@ -29,7 +29,6 @@
 >
   <div class="cuadroMensajes">
       <!--Directivas para fltrar mensajes-->
-      <div *ngIf="isSalaSelected()"> HOLA </div>
       <div *ngFor="let message of messages">
           <div
           *ngIf="message.nombre == userName"
