@@ -18,9 +18,10 @@ const routes: Routes = [
         {
           path: 'blank',
           loadChildren: './blank/blank.module#BlankPageModule'
-        }
+        },
+        { path: 'miembros-sala', loadChildren: './miembros-sala/miembros-sala.module#MiembrosSalaPageModule' }
     ]
-  }
+  },
 ];
 
 @NgModule({
