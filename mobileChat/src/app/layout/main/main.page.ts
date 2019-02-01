@@ -49,8 +49,6 @@ export class MainPage implements OnInit {
 
   constructor(
     public navCtrl: NavController,
-    private dataService: AuthService,
-    private router: Router,
     private http: Http,
     private salaService: SalasService
   ) {
@@ -107,32 +105,9 @@ refrescandoSala(): Boolean {
 
   ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem("user")).Persona;
-    this.getFotoPerfil();
     this.isSalaSelected();
   }
 
-  getFotoPerfil() {
-    this.srcFoto = "assets/images/user.png";
-    this.dataService
-      .foto(this.user.id)
-      .then(respuesta => {
-        if (JSON.stringify(respuesta) == "[0]") {
-          return;
-        }
-        const fotoFile = respuesta[0].adjunto;
-        const fotoNombre = respuesta[0].nombreArchivo;
-        const fotoType = respuesta[0].tipoArchivo;
-        this.srcFoto = "data:" + fotoType + ";base64," + fotoFile;
-      })
-      .catch(error => {
-        this.srcFoto = "assets/images/user.png";
-      });
-  }
-
-  logout() {
-    sessionStorage.clear();
-    this.router.navigate(["/login"]);
-  }
   CodificarArchivo(event) {
     this.userName;
 

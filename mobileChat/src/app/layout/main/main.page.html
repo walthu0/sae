@@ -12,13 +12,6 @@
           style="margin-top: 5px;"/></span
           ><span *ngIf = "refrescandoSala()">&nbsp;Espere</span>
     </ion-title>
-    <ion-chip slot="end">
-        <ion-avatar>
-            <img [src]="srcFoto">
-        </ion-avatar>
-        <ion-label>{{user.nombre1}} {{user.nombre2}} {{user.apellido1}} {{user.apellido2}}</ion-label>
-        <ion-icon name="close" (click)="logout()"></ion-icon>
-    </ion-chip>
   </ion-toolbar>
 </ion-header>
 
