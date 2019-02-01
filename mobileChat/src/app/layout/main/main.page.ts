@@ -158,7 +158,7 @@ export class MainPage implements OnInit {
 
   getMessages() {
    
-    this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
+   // this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
     let messagesRef = firebase
       .database()
       .ref("/mensajes")
@@ -201,7 +201,7 @@ export class MainPage implements OnInit {
       this.message = "";
     } else {
 
-        this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
+     //   this.salaElegida = JSON.parse(sessionStorage.getItem('idSala'));
      
       let messageRef = firebase
         .database()
