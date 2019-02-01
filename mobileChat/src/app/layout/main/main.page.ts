@@ -28,6 +28,7 @@ import * as firebase from "firebase";
 export class MainPage implements OnInit {
   @ViewChild("fileInput") fileInput;
   @ViewChild("refresh") refresh;
+  
   user: any;
   srcFoto: string;
 
@@ -181,6 +182,7 @@ refrescandoSala(): Boolean {
         this.fotoType = file.type;
         this.fotoFile = reader.result.toString().split(",")[1];
         this.srcFoto = this.fotoFile;
+        this.writeMessage();
       };
     }
   }

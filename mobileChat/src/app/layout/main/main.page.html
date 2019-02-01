@@ -79,21 +79,21 @@
               <div class="col-12 text-justify">
                   <div *ngIf = "message.foto">
                       <div *ngIf="message.tipo.split('/')[0] === 'image'">
-                          <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
+                          
                               <img
                                   src="data:{{message.tipo}};base64,{{ message.foto}}"
                                   width="auto" height="100px"
+                                  (click)="downloadFile(message.foto, message.tipo, message.nomDoc)"
                                   alt=""
                               />
-                          </span>
                       </div>
                       <div *ngIf="message.tipo.split('/')[0] !== 'image'">
-                              <span (click)="downloadFile(message.foto, message.tipo, message.nomDoc)">
+                              
                                   <img
+                                      (click)="downloadFile(message.foto, message.tipo, message.nomDoc)"
                                       src="assets/google_docs-logo2.jpg"
                                       width="auto" height="50px"
                                   />
-                          </span>
                       </div>
                   </div>
               </div>
