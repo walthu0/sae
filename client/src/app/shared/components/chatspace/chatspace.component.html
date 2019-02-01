@@ -4,9 +4,9 @@
         <!--   <input [(ngModel)]="idPersona" placeholder="nombre"/>-->
         <div class="btn-group m-2" role="group" aria-label="Basic example">
             <!-- <label style="text-align: center " [(ngModel)]="salaElegida" >{{salaElegida}}</label>-->
-            <button type="button" class="btn btn-sm btn-info" #refresh>
+            <a href="#mostrarUltimo" class="btn btn-sm btn-info" #refresh>
                 <i class="fa fa-refresh"></i>
-            </button>
+            </a>
             <button
                 *ngIf="minimizar == false"
                 type="button"
@@ -44,7 +44,6 @@
                     style="overflow-y: auto; overflow-x: hidden; "
                 >
                     <div class="cuadroMensajes">
-                        <!--Directivas para fltrar mensajes-->
                         <div *ngFor="let message of messages">
                             <div
                                 *ngIf="message.nombre == userName"
@@ -81,9 +80,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--
-                                Sus Mensajes
-                           -->
                             <div
                                 *ngIf="message.nombre != userName"
                                 class="bubble-others"
@@ -119,6 +115,9 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row" id="mostrarUltimo">
+                            .
                         </div>
                     </div>
                 </div>
@@ -165,7 +164,6 @@
                     >
                         <i class="fa fa-paperclip"></i>
                     </button>
-                    -->
                 </div>
             </div>
         </div>

@@ -15,7 +15,8 @@ export class SidebarComponent implements OnInit {
   constructor(private salasDataService: SalasService) { }
 
   ngOnInit() {
-    this.getSalas(76);
+    const usuario = JSON.parse(sessionStorage.getItem('user')).Persona;
+    this.getSalas(usuario.id);
   }
 
   getSalas(id: number) {

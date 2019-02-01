@@ -84,7 +84,6 @@ export class ChatspaceComponent implements OnInit {
         this.messagesRef.on("value", snap => {
             let data = snap.val();
             this.getMessages();
-            console.log("cambio en BDD");
             if ( typeof this.refresh !== 'undefined') {
                 this.refresh.nativeElement.click();
             }
@@ -170,7 +169,7 @@ export class ChatspaceComponent implements OnInit {
             reader.onload = () => {
                 this.fotoNombre = file.name;
                 this.fotoType = file.type;
-                this.fotoFile = reader.result.split(",")[1];
+                this.fotoFile = reader.result.toString().split(",")[1];
                 this.srcFoto = this.fotoFile;
             };
         }
@@ -185,7 +184,7 @@ export class ChatspaceComponent implements OnInit {
                 this.form.get("avatar").setValue({
                     filename: file.name,
                     filetype: file.type,
-                    value: reader.result.split(",")[1]
+                    value: reader.result.toString().split(",")[1]
                 });
             };
         }

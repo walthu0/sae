@@ -2,6 +2,7 @@ import { AuthService } from "./../../services/auth.service";
 import { Router } from "@angular/router";
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { Http } from "@angular/http";
+import { AlertController } from '@ionic/angular';
 import {
   FormBuilder,
   FormGroup,
@@ -26,6 +27,7 @@ import * as firebase from "firebase";
 })
 export class MainPage implements OnInit {
   @ViewChild("fileInput") fileInput;
+  @ViewChild("refresh") refresh;
   user: any;
   srcFoto: string;
 
@@ -45,11 +47,11 @@ export class MainPage implements OnInit {
   salaElegida: any = "yavirac";
 
   salas: Salas[] = [];
-  @ViewChild("refresh") refresh;
 
   constructor(
     public navCtrl: NavController,
     private http: Http,
+    public alertController: AlertController,
     private salaService: SalasService
   ) {
     this.user = JSON.parse(sessionStorage.getItem("user")).Persona;
@@ -73,7 +75,64 @@ export class MainPage implements OnInit {
 
   }
 
- 
+ writeMessage() {
+   this.presentAlertPrompt();
+ }
+verifyImage() {
+  if (this.fotoFile === '' || this.fotoFile === null) {
+    return 'Sin Adjunto';
+  }
+  if (this.fotoType.split('/')[0] === 'image') {
+    return '<img src="data:' + this.fotoType + ';base64,' + this.fotoFile + '" width="100px" height="100px">'
+  } else {
+    return '<img src="./../../../assets/google_docs-logo2.jpg" width="64px" height="auto">';
+  }
+}
+
+ async presentAlertPrompt() {
+  const alert = await this.alertController.create({
+    header: 'Mensaje Nuevo',
+    message: this.verifyImage(),
+    inputs: [
+      {
+        name: 'message',
+        id: 'message',
+        type: 'text',
+        placeholder: 'Escriba su mensaje',
+      }
+    ],
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+          console.log('Confirm Cancel');
+        }
+      },
+      {
+        text: 'Enviar',
+        handler: data => {
+          this.message = data.message;
+          this.sendMessage();
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
+eliminarAdjunto() {
+  this.fotoNombre = "";
+  this.fotoType = "";
+  this.fotoFile = "";
+  this.fotoArchivo = "";
+}
+
+adjuntarArchivo() {
+  this.fileInput.nativeElement.click();
+}
   checkForMessages() {
       
   
@@ -90,6 +149,10 @@ export class MainPage implements OnInit {
             this.refresh.nativeElement.click();
         }
     });
+
+    if ( typeof this.refresh !== 'undefined') {
+      this.refresh.nativeElement.click();
+  }
 }
 
 refrescandoSala(): Boolean {
@@ -109,9 +172,7 @@ refrescandoSala(): Boolean {
   }
 
   CodificarArchivo(event) {
-    this.userName;
-
-    let reader = new FileReader();
+    const reader = new FileReader();
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       reader.readAsDataURL(file);
