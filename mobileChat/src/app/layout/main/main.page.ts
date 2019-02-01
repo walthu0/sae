@@ -94,6 +94,16 @@ export class MainPage implements OnInit {
     });
 }
 
+refrescandoSala(): Boolean {
+  const refrescarSala = JSON.parse(sessionStorage.getItem("refrescarSala"));
+  if ( refrescarSala) {
+    sessionStorage.setItem("refrescarSala", JSON.stringify(false));
+    this.isSalaSelected();
+    return false;
+  } else {
+    return false;
+  }
+}
 
   ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem("user")).Persona;

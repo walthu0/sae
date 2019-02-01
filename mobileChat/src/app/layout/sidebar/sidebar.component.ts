@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit {
   salaSeleccionada(sala: any) {
     this.entidadSeleccionada = sala;
     sessionStorage.setItem('idSala', JSON.stringify(sala.idSala));
-    console.log("sala seleccionada "+sala.idSala);
+    sessionStorage.setItem('refrescarSala', JSON.stringify(true));
     sessionStorage.setItem('sala', JSON.stringify(sala));
   }
 }
