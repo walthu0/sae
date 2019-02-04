@@ -134,6 +134,7 @@ eliminarAdjunto() {
 adjuntarArchivo() {
   this.fileInput.nativeElement.click();
 }
+
   checkForMessages() {
       
   
@@ -169,7 +170,7 @@ refrescandoSala(): Boolean {
 
   ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem("user")).Persona;
-    this.isSalaSelected();
+
   }
 
   CodificarArchivo(event) {
@@ -244,7 +245,7 @@ refrescandoSala(): Boolean {
     let empty = "";
 
 
-    if (this.message.trim == null) {
+    if (this.message.trim() === "") {
       alert("No puede enviar un mensaje vacio");
       this.message = "";
     } else {

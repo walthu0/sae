@@ -202,7 +202,7 @@ export class ChatspaceComponent implements OnInit {
         let empty = "";
         console.log(this.message.trim.length);
 
-        if (this.message.trim == null) {
+        if (this.message.trim() === "") {
             alert("No puede enviar un mensaje vacio");
             this.message = "";
         } else {
