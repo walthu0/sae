@@ -21,8 +21,7 @@ import { ToastContainer } from 'ng2-toastr/src/toast-container.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { environment } from '../environments/environment';
-//servicios chat
-import { ChatObtenerChatSalaService} from '../app/shared/components/chatspace/chat-obtener-chat-sala.service';
+
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
@@ -55,7 +54,7 @@ export function createTranslateLoader(http: HttpClient) {
     ],
     declarations: [AppComponent],
     providers: [AuthGuard,
-        PersonaService, ChatObtenerChatSalaService],
+        PersonaService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

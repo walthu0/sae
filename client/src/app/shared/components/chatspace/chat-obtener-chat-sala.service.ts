@@ -32,11 +32,7 @@ export class ChatObtenerChatSalaService {
       );
     }
 
-    //clase tomar mensajes
-  // getChatBySalaId(id) {
-    //  return this.angularFireDatabase.list("mensajes", ref => ref.orderByChild("salaid").equalTo(salaId)).valueChanges()
-   // return this.angularFireDatabase.list("mensajes", ref => ref.orderByChild("salaid")).valueChanges()   
-  // }
+ 
 
   getData() {
     return this.http2.get<Persona[]>('http://www.yavirac.edu.ec/ignug/server/docente/leer');

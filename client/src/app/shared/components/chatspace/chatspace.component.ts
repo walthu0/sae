@@ -1,11 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { Http } from "@angular/http";
-import {
-    FormBuilder,
-    FormGroup,
-    Validators,
-    FormsModule
-} from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 //clases
 import { Persona } from "app/entidades/CRUD/Persona";
 import { LoginResult } from "./../../../entidades/especifico/Login-Result";
@@ -13,7 +8,6 @@ import { LoginResult } from "./../../../entidades/especifico/Login-Result";
 //servicios
 import { FotoPerfilService } from "app/CRUD/fotoperfil/fotoperfil.service";
 import { ChatObtenerChatSalaService } from "app/shared/components/chatspace/chat-obtener-chat-sala.service";
-import { ChatObtenerDocenteService } from "app/shared/components/chatspace/chat-obtener-docente.service";
 
 import { Observable } from "rxjs/Observable";
 // instancia a la Base de datos
@@ -25,12 +19,12 @@ import { saveAs } from "file-saver/FileSaver";
     selector: "app-chatspace",
     templateUrl: "./chatspace.component.html",
     styleUrls: ["./chatspace.component.scss"],
-    providers: [ChatObtenerChatSalaService, ChatObtenerDocenteService]
+    providers: [ChatObtenerChatSalaService]
 })
 export class ChatspaceComponent implements OnInit {
-    salaElegida = "nulo";
-    busy: Promise<any>;
-    showMenu: string = "";
+
+    // Variables
+    salaElegida: string = "";
     personaLogeada: Persona;
     userName: string = "";
     srcFotoPerfil: string = "";
@@ -38,29 +32,23 @@ export class ChatspaceComponent implements OnInit {
     fotoNombre: string = "";
     fotoType: string = "";
     fotoFile: string = "";
-
     message: string = "";
     messages = [];
+
+    // Foto
+    busy: Promise<any>;
+
+    //actualizar
+    showMenu: string = "";
 
     //variables botones auxiliares maxinizar, cerrar
     minimizar = false;
     cerrar = true;
-    //variables mensajes
-
-    //nombreCarrera: string;
-    // nombreMateria: string;
-    nombreValue: string = "";
-    mensajeValue: string = "";
-    timeStamp: Date = new Date();
-
-    mensaje: string = "";
-    person: Persona;
 
     //cargar archivo
     form: FormGroup;
-    //variable idPersona para tomar el usuario
-    idPersona: string = "";
-    arrayPersona = [];
+
+    // referencia a la BDD
     messagesRef: any;
 
     @ViewChild("refresh") refresh;
@@ -69,26 +57,12 @@ export class ChatspaceComponent implements OnInit {
     constructor(
         private fotoPerfilDataService: FotoPerfilService,
         private chatObtenerChatSalaService: ChatObtenerChatSalaService,
-        private chatObtenerDocente: ChatObtenerDocenteService,
         private http: Http
     ) {
         this.messagesRef = firebase.database().ref("/mensajes");
     }
 
-    canActivate(): Observable<boolean> {
-        firebase.auth.apply;
-        return;
-    }
 
-    checkForMessages() {
-        this.messagesRef.on("value", snap => {
-            let data = snap.val();
-            this.getMessages();
-            if ( typeof this.refresh !== 'undefined') {
-                this.refresh.nativeElement.click();
-            }
-        });
-    }
 
     ngOnInit() {
         this.checkForMessages();
@@ -110,6 +84,29 @@ export class ChatspaceComponent implements OnInit {
         this.botonMaximizar();
 
         this.cerrar = true;
+    }
+    botonMinimizar() {
+        this.minimizar = true;
+    }
+    botonMaximizar() {
+        this.minimizar = false;
+    }
+
+    botonCerrar() {
+        this.cerrar = true;
+    }
+    botonAbrir() {
+        this.cerrar = false;
+    }
+
+    checkForMessages() {
+        this.messagesRef.on("value", snap => {
+            let data = snap.val();
+            this.getMessages();
+            if (typeof this.refresh !== 'undefined') {
+                this.refresh.nativeElement.click();
+            }
+        });
     }
 
     addExpandClass(element: any) {
@@ -142,22 +139,10 @@ export class ChatspaceComponent implements OnInit {
                 this.srcFotoPerfil =
                     "data:" + this.fotoType + ";base64," + this.fotoFile;
             })
-            .catch(error => {});
+            .catch(error => { });
     }
 
-    botonMinimizar() {
-        this.minimizar = true;
-    }
-    botonMaximizar() {
-        this.minimizar = false;
-    }
 
-    botonCerrar() {
-        this.cerrar = true;
-    }
-    botonAbrir() {
-        this.cerrar = false;
-    }
 
     CodificarArchivo(event) {
         const reader = new FileReader();
@@ -221,7 +206,7 @@ export class ChatspaceComponent implements OnInit {
                 fecha: "" + Date.now(),
 
                 salaID: this.salaElegida,
-                foto: "" + this.srcFoto,
+                adjunto: "" + this.srcFoto,
                 nomDoc: "" + this.fotoNombre,
                 tipo: "" + this.fotoType
             });
@@ -274,16 +259,5 @@ export class ChatspaceComponent implements OnInit {
 
         saveAs(blob, nomDoc + "");
     }
-    /*
-  downloadFile() {
-    const byteCharacters = atob(this.recursoDigital.adjunto);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: ''+this.recursoDigital.tipoArchivo+'' });
-    saveAs(blob, this.recursoDigital.nombreArchivo);
-}
-*/
+
 }

@@ -1,19 +1,20 @@
+<!-- Salas -->
 <nav *ngIf="refreshContactVisibleState()" class="chatspace" [ngClass]="{sidebarPushRight: isActive}">
     <ul class="list-group">
-        <a *ngFor = "let sala of salas" class="list-group-item">
-            <span class="fa fa-th-list" title="Mostrar Contactos" (click)="mostrarContactos(contactList, sala.miembros)"></span><span style="font-size: 10px;">&nbsp; 
-                <a (click)="salaSeleccionada(sala.idSala)"
-                class="list-group-item" (click)="chatVentana.getMessages()">
-                {{sala.nombre}}
-</a>
-                </span>&nbsp;
+        <a *ngFor="let sala of salas" class="list-group-item">
+            <span class="fa fa-th-list" title="Mostrar Contactos" (click)="mostrarContactos(contactList, sala.miembros)"></span><span
+                style="font-size: 10px;">&nbsp;
+                <a (click)="salaSeleccionada(sala.idSala)" class="list-group-item" (click)="chatVentana.getMessages()">
+                    {{sala.nombre}}
+                </a>
+            </span>&nbsp;
             <span *ngIf="sala.mensajesNuevos !== 0" class="badge badge-pill badge-info">{{sala.mensajesNuevos}}</span>
         </a>
     </ul>
 </nav>
-
+<!-- Componente hijo -->
 <app-chatspace #chatVentana></app-chatspace>
-
+<!-- Ventana modal-->
 <ng-template #contactList let-="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">
@@ -34,7 +35,7 @@
                                 </th>
                                 <th scope="col">
                                     <span>
-                                    <strong>Nombre Completo</strong>
+                                        <strong>Nombre Completo</strong>
                                     </span>
                                 </th>
                             </tr>
@@ -73,7 +74,7 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                       Tel Domicilio:
+                                        Tel Domicilio:
                                     </th>
                                     <td>
                                         {{personaSolicitada.telefonoDomicilio}}
@@ -100,7 +101,8 @@
                                         Contacto de Emergencia:
                                     </th>
                                     <td>
-                                        {{personaSolicitada.nombreContactoEmergencia}} / {{personaSolicitada.parentescoContactoEmergencia}}
+                                        {{personaSolicitada.nombreContactoEmergencia}} /
+                                        {{personaSolicitada.parentescoContactoEmergencia}}
                                     </td>
                                 </tr>
                                 <tr>
@@ -121,7 +123,5 @@
             </div>
         </div>
     </div>
-    <div class="modal-footer">
-       <button type="button" class="btn btn-default" (click)="c('close')">Cerrar</button>
-    </div>
- </ng-template>
+
+</ng-template>
